@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      author: AlexRedby
+      file: changelogs/1_create_initial_database.sql
+      relativeToChangelogFile: true
