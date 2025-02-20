@@ -23,7 +23,7 @@ fun Route.getBarterTree() {
     val tarkovService: TarkovService by application.inject()
 
     get("/barter-tree") {
-        val res = tarkovService.getBarterTree()
+        val res = tarkovService.getCraftingTree()
         logger.info { "Successfully created tree!" }
         call.respond(res)
     }
