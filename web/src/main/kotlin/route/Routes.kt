@@ -27,4 +27,10 @@ fun Route.getBarterTree() {
         logger.info { "Successfully created tree!" }
         call.respond(res)
     }
+
+    get("/crafting-tree") {
+        val res = tarkovService.getReactFlowTree()
+        logger.info { "Successfully created tree for react-flow!" }
+        call.respond(res)
+    }
 }

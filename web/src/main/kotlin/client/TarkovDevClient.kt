@@ -41,10 +41,10 @@ class TarkovDevClient(
             ?.filterNotNull()
             ?: emptyList()
 
-    suspend fun getCrafts(): List<Craft> =
+    suspend fun getCrafts(limit: Int? = null): List<Craft> =
         apiContext
             .query {
-                crafts(gameMode = GameMode.pve) {
+                crafts(gameMode = GameMode.pve, limit = limit) {
                     id()
                     requiredItems {
                         count()
