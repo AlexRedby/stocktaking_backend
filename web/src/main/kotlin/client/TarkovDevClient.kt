@@ -48,6 +48,12 @@ class TarkovDevClient(
                     id()
                     requiredItems {
                         count()
+                        quantity()
+                        attributes {
+                            type()
+                            name()
+                            value()
+                        }
                         item {
                             id()
                             name()
@@ -56,6 +62,12 @@ class TarkovDevClient(
                     }
                     rewardItems {
                         count()
+                        quantity()
+                        attributes {
+                            type()
+                            name()
+                            value()
+                        }
                         item {
                             id()
                             name()
