@@ -33,4 +33,8 @@ fun Route.getBarterTree() {
         logger.info { "Successfully created tree for react-flow!" }
         call.respond(res)
     }
+
+    get("/tool-names") {
+        call.respond(tarkovService.getAllToolNames())
+    }
 }

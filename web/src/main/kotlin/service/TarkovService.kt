@@ -24,6 +24,20 @@ class TarkovService(
         const val THICC_ITEM_CASE_ID = "5c0a840b86f7742ffa4f2482"
     }
 
+    suspend fun getAllToolNames(): Set<String> {
+        val crafts = tarkovDevClient.getCrafts()
+
+        return crafts.asSequence()
+            .flatMap { b ->
+                b.requiredItems.filterNotNull().filter { item ->
+                    item.attributes?.any { it?.type == "tool" && it.value == "true" } == true
+                }
+            }.map { it.item.name }
+            .filterNotNull()
+            .sorted()
+            .toSet()
+    }
+
     suspend fun getReactFlowTree(): ReactFlowGraph {
         val crafts = tarkovDevClient.getCrafts()
         val barters = tarkovDevClient.getBarters()
@@ -33,7 +47,7 @@ class TarkovService(
         var nodes = crafts.flatMap { b ->
             (b.requiredItems + b.rewardItems).filterNotNull()
                 // Tools will be returned after craft finished, so we don't need to include them in tree
-                .filter { it.attributes?.none { it?.type == "tool" && it.value == "true" } == true }
+                .filter { item -> item.attributes?.none { it?.type == "tool" && it.value == "true" } == true }
                 .map {
                     ReactFlowNode(
                         id = it.item.id,
@@ -55,12 +69,12 @@ class TarkovService(
         }.toSet()
 
         var edges = crafts.flatMap { b ->
-            b.rewardItems.filterNotNull().flatMap { target ->
+            b.rewardItems.filterNotNull().flatMap { source ->
                 b.requiredItems
                     .filterNotNull()
                     // Tools will be returned after craft finished, so we don't need to include them in tree
-                    .filter { it.attributes?.none { it?.type == "tool" && it.value == "true" } == true }
-                    .map { source ->
+                    .filter { item -> item.attributes?.none { it?.type == "tool" && it.value == "true" } == true }
+                    .map { target ->
                         ReactFlowEdge(
                             id = source.item.id + target.item.id,
                             source = source.item.id,
@@ -70,8 +84,8 @@ class TarkovService(
             }
         }.toSet()
         edges += barters.flatMap { b ->
-            b.rewardItems.filterNotNull().flatMap { target ->
-                b.requiredItems.filterNotNull().map { source ->
+            b.rewardItems.filterNotNull().flatMap { source ->
+                b.requiredItems.filterNotNull().map { target ->
                     ReactFlowEdge(
                         id = source.item.id + target.item.id,
                         source = source.item.id,
@@ -194,11 +208,11 @@ class TarkovService(
     ): Pair<Set<ReactFlowNode>, Set<ReactFlowEdge>> {
         visitedIds.addAll(neededIds)
 
-        val foundEdges = edges.filter { neededIds.contains(it.target) }.toSet()
+        val foundEdges = edges.filter { neededIds.contains(it.source) }.toSet()
         val foundNodes = allNodes.filter { neededIds.contains(it.id) }.toSet()
 
         if (foundEdges.isNotEmpty()) {
-            val newIds = foundEdges.map { it.source }
+            val newIds = foundEdges.map { it.target }
                 .filter { !visitedIds.contains(it) }
                 .toSet()
             val res = filterTree(allNodes, edges, newIds, visitedIds)
