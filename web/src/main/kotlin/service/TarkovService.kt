@@ -96,8 +96,8 @@ class TarkovService(
         }.toSet()
 
         // Exclude everything except selected root item
-        val rootNodeIds = nodes.filter { it.id == THICC_ITEM_CASE_ID }.map { it.id }.toSet()
-        val res = filterTree(nodes, edges, rootNodeIds, mutableSetOf())
+        val rootNodes = nodes.filter { it.id == THICC_ITEM_CASE_ID }
+        val res = filterTree(nodes, edges, rootNodes.map { it.id }.toSet(), mutableSetOf())
 
         // Add root which needed for d3-hierarchy
         // val rootNode = ReactFlowNode("root", ReactFlowNodeData("Root"))
@@ -118,7 +118,9 @@ class TarkovService(
         // }
         val graph = ReactFlowGraph(res.first, res.second)
         // Need to remove all loops for d3-hierarchy
-        // searchForLoop(rootNode, graph, mutableSetOf())
+        rootNodes.forEach {
+            searchForLoop(it, graph, mutableSetOf())
+        }
 
         return graph
     }
