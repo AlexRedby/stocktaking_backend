@@ -4,12 +4,19 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import ru.alexredby.stocktaking.client.TarkovDevClient
+import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.D3Attributes
 import ru.alexredby.stocktaking.dto.D3Node
+import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.dto.ReactFlowEdge
 import ru.alexredby.stocktaking.dto.ReactFlowGraph
 import ru.alexredby.stocktaking.dto.ReactFlowNode
-import ru.alexredby.stocktaking.dto.ReactFlowNodeData
+import ru.alexredby.stocktaking.util.isTool
+import ru.alexredby.stocktaking.util.toCraftComponents
+import ru.alexredby.stocktaking.util.toGraphItem
+import ru.alexredby.stocktaking.util.toReactFlowEdges
+import ru.alexredby.stocktaking.util.toReactFlowNodes
+import ru.alexredby.stocktaking.util.toTools
 
 val logger = KotlinLogging.logger { }
 
@@ -29,9 +36,7 @@ class TarkovService(
 
         return crafts.asSequence()
             .flatMap { b ->
-                b.requiredItems.filterNotNull().filter { item ->
-                    item.attributes?.any { it?.type == "tool" && it.value == "true" } == true
-                }
+                b.requiredItems.filterNotNull().filter { it.isTool() }
             }.map { it.item.name }
             .filterNotNull()
             .sorted()
@@ -42,85 +47,55 @@ class TarkovService(
         val crafts = tarkovDevClient.getCrafts()
         val barters = tarkovDevClient.getBarters()
 
-        // TODO: build proper tree before processing it for ReactFlow or what else...
+        val idToItem: Map<String, GraphItem> = buildMap {
+            crafts.forEach { b ->
+                val components = b.requiredItems.toCraftComponents(this)
+                val tools = b.requiredItems.toTools(this)
 
-        var nodes = crafts.flatMap { b ->
-            (b.requiredItems + b.rewardItems).filterNotNull()
-                // Tools will be returned after craft finished, so we don't need to include them in tree
-                .filter { item -> item.attributes?.none { it?.type == "tool" && it.value == "true" } == true }
-                .map {
-                    ReactFlowNode(
-                        id = it.item.id,
-                        data = ReactFlowNodeData(
-                            label = it.item.shortName!!
-                        ),
-                    )
-                }
-        }.toSet()
-        nodes += barters.flatMap { b ->
-            (b.requiredItems + b.rewardItems).filterNotNull().map {
-                ReactFlowNode(
-                    id = it.item.id,
-                    data = ReactFlowNodeData(
-                        label = it.item.shortName!!
-                    ),
-                )
-            }
-        }.toSet()
-
-        var edges = crafts.flatMap { b ->
-            b.rewardItems.filterNotNull().flatMap { source ->
-                b.requiredItems
-                    .filterNotNull()
-                    // Tools will be returned after craft finished, so we don't need to include them in tree
-                    .filter { item -> item.attributes?.none { it?.type == "tool" && it.value == "true" } == true }
-                    .map { target ->
-                        ReactFlowEdge(
-                            id = source.item.id + target.item.id,
-                            source = source.item.id,
-                            target = target.item.id,
-                        )
+                b.rewardItems.filterNotNull()
+                    .forEach {
+                        it.item.toGraphItem(this).apply {
+                            val craft = Craft(
+                                result = this,
+                                count = it.count,
+                                components = components,
+                                tools = tools
+                            )
+                            this.crafts.add(craft)
+                            components.forEach { c -> c.item.usedIn.add(craft) }
+                        }
                     }
             }
-        }.toSet()
-        edges += barters.flatMap { b ->
-            b.rewardItems.filterNotNull().flatMap { source ->
-                b.requiredItems.filterNotNull().map { target ->
-                    ReactFlowEdge(
-                        id = source.item.id + target.item.id,
-                        source = source.item.id,
-                        target = target.item.id,
-                    )
-                }
+            barters.forEach { b ->
+                val components = b.requiredItems.toCraftComponents(this)
+
+                b.rewardItems.asSequence()
+                    .filterNotNull()
+                    .forEach {
+                        it.item.toGraphItem(this).apply {
+                            val craft = Craft(
+                                result = this,
+                                count = it.count,
+                                components = components,
+                                tools = emptySet()
+                            )
+                            this.crafts.add(craft)
+                            components.forEach { c -> c.item.usedIn.add(craft) }
+                        }
+                    }
             }
-        }.toSet()
-
-        // Exclude everything except selected root item
-        val rootNodes = nodes.filter { it.id == THICC_ITEM_CASE_ID }
-        val res = filterTree(nodes, edges, rootNodes.map { it.id }.toSet(), mutableSetOf())
-
-        // Add root which needed for d3-hierarchy
-        // val rootNode = ReactFlowNode("root", ReactFlowNodeData("Root"))
-        // val allChildrenIds = edges.asSequence()
-        //     .map { it.target }
-        //     .toSet()
-        // val rootNodeIds = nodes.asSequence()
-        //     .filter { !allChildrenIds.contains(it.id) }
-        //     .map { it.id }
-        //     .toSet()
-        // nodes += rootNode
-        // edges += rootNodeIds.map {
-        //     ReactFlowEdge(
-        //         id = "root$it",
-        //         source = "root",
-        //         target = it,
-        //     )
-        // }
-        val graph = ReactFlowGraph(res.first, res.second)
-        // Need to remove all loops for d3-hierarchy
-        rootNodes.forEach {
-            searchForLoop(it, graph, mutableSetOf())
         }
+
+        // Exclude everything except selected item and its subtree
+        val rootNode = idToItem[THICC_ITEM_CASE_ID]!!
+        val neededItems = findAllItemsInSubTreeFor(rootNode, mutableSetOf())
+
+        val nodes = neededItems.toReactFlowNodes()
+        val edges = neededItems.toReactFlowEdges()
+        val graph = ReactFlowGraph(nodes, edges)
+
+        // Remove all loops for better graph readability
+        searchForLoop(nodes.find { it.id == rootNode.id }!!, graph, mutableSetOf())
 
         return graph
     }
@@ -203,6 +178,22 @@ class TarkovService(
             .toList()
 
         return createRootNode(rootNodes)
+    }
+
+    private fun findAllItemsInSubTreeFor(root: GraphItem, visitedIds: MutableSet<String>): Set<GraphItem> {
+        visitedIds.add(root.id)
+
+        val res = root.crafts.flatMap { craft ->
+            craft.components
+                .filter { !visitedIds.contains(it.item.id) }
+                .flatMap {
+                    findAllItemsInSubTreeFor(it.item, visitedIds)
+                }
+        }.toSet() + root
+
+        visitedIds.remove(root.id)
+
+        return res
     }
 
     private fun filterTree(

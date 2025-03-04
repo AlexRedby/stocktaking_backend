@@ -21,6 +21,11 @@ class TarkovDevClient(
                     id()
                     requiredItems {
                         count()
+                        attributes {
+                            type()
+                            name()
+                            value()
+                        }
                         item {
                             id()
                             name()
@@ -29,13 +34,17 @@ class TarkovDevClient(
                     }
                     rewardItems {
                         count()
+                        attributes {
+                            type()
+                            name()
+                            value()
+                        }
                         item {
                             id()
                             name()
                             shortName()
                         }
                     }
-                    source()
                 }
             }.barters
             ?.filterNotNull()
@@ -48,7 +57,6 @@ class TarkovDevClient(
                     id()
                     requiredItems {
                         count()
-                        quantity()
                         attributes {
                             type()
                             name()
@@ -62,7 +70,6 @@ class TarkovDevClient(
                     }
                     rewardItems {
                         count()
-                        quantity()
                         attributes {
                             type()
                             name()
@@ -74,7 +81,6 @@ class TarkovDevClient(
                             shortName()
                         }
                     }
-                    source()
                 }
             }.crafts
             ?.filterNotNull()
