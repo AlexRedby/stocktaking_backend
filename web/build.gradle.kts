@@ -3,6 +3,7 @@ version = "1.0-SNAPSHOT"
 
 plugins {
     ru.alexredby.convention.`kotlin-jvm`
+    // TODO: Move version in libs.versions.toml
     kotlin("plugin.serialization") version "2.1.10"
     id("io.github.ermadmi78.kobby") version "4.1.1" // TODO: Check alternative - Apollo
 }
@@ -12,29 +13,28 @@ dependencies {
 
     implementation(libs.jooq.kotlin)
 
-    // TODO: move to libs.versions.toml
     // Add this dependency to enable Kotlinx Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation(libs.kotlinx.serialization.json)
+    // Extension over serialization for ktor
+    implementation(libs.ktor.serialization.kotlinx.json)
 
+    // TODO: move client to separate module
     // Add this dependency to enable default Ktor adapters generation
-    implementation("io.ktor:ktor-client-cio:3.0.3")
-    implementation("io.ktor:ktor-client-content-negotiation:3.0.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.3")
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
 
-    implementation("io.insert-koin:koin-ktor:4.0.2")
-    implementation("io.insert-koin:koin-logger-slf4j:4.0.2")
+    // DI in ktor 3.x
+    implementation(libs.koin.ktor3)
+    implementation(libs.koin.logger.slf4j)
 
-    // Needed for making web application
-    implementation("io.ktor:ktor-server-core:3.0.3")
-    implementation("io.ktor:ktor-server-host-common:3.0.3")
-    implementation("io.ktor:ktor-server-netty:3.0.3")
-    implementation("io.ktor:ktor-server-config-yaml:3.0.3")
-    implementation("io.ktor:ktor-server-content-negotiation:3.0.3")
+    // Need for the embedded server (EngineMain)
+    implementation(libs.ktor.server.netty)
+    // Need to read application.yaml
+    implementation(libs.ktor.server.config.yaml)
+    // Need to say a server in which format communicate in API
+    implementation(libs.ktor.server.content.negotiation)
 
     runtimeOnly(libs.postgresql)
-
-    testImplementation("io.ktor:ktor-server-test-host:3.0.3")
-    testImplementation("io.insert-koin:koin-test:4.0.2")
 }
 
 kobby {

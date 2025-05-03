@@ -4,7 +4,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.application.Application
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.application
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import org.koin.ktor.ext.inject
@@ -19,8 +18,7 @@ fun Application.configureRouting() {
 }
 
 fun Route.getBarterTree() {
-    // TODO: why i need application here?
-    val tarkovService: TarkovService by application.inject()
+    val tarkovService: TarkovService by inject()
 
     get("/crafting-tree") {
         val res = tarkovService.getReactFlowTree()
