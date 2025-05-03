@@ -22,12 +22,6 @@ fun Route.getBarterTree() {
     // TODO: why i need application here?
     val tarkovService: TarkovService by application.inject()
 
-    get("/barter-tree") {
-        val res = tarkovService.getCraftingTree()
-        logger.info { "Successfully created tree!" }
-        call.respond(res)
-    }
-
     get("/crafting-tree") {
         val res = tarkovService.getReactFlowTree()
         logger.info { "Successfully created tree for react-flow!" }
