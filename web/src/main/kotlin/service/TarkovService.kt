@@ -115,7 +115,10 @@ class TarkovService(
     }
 
     private fun filterTree(
-        allNodes: Set<ReactFlowNode>, edges: Set<ReactFlowEdge>, neededIds: Set<String>, visitedIds: MutableSet<String>
+        allNodes: Set<ReactFlowNode>,
+        edges: Set<ReactFlowEdge>,
+        neededIds: Set<String>,
+        visitedIds: MutableSet<String>,
     ): Pair<Set<ReactFlowNode>, Set<ReactFlowEdge>> {
         visitedIds.addAll(neededIds)
 
