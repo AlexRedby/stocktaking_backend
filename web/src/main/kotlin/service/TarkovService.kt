@@ -3,18 +3,12 @@ package ru.alexredby.stocktaking.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import ru.alexredby.stocktaking.client.TarkovDevClient
-import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.dto.ReactFlowEdge
 import ru.alexredby.stocktaking.dto.ReactFlowGraph
 import ru.alexredby.stocktaking.dto.ReactFlowNode
-import ru.alexredby.stocktaking.util.isTool
-import ru.alexredby.stocktaking.util.toCraftComponents
-import ru.alexredby.stocktaking.util.toGraphItem
 import ru.alexredby.stocktaking.util.toReactFlowEdges
 import ru.alexredby.stocktaking.util.toReactFlowNodes
-import ru.alexredby.stocktaking.util.toTools
 
 val logger = KotlinLogging.logger { }
 
@@ -23,66 +17,25 @@ val tarkovServiceModule = module {
 }
 
 class TarkovService(
-    private val tarkovDevClient: TarkovDevClient
+    private val tarkovStorage: TarkovStorage
 ) {
     companion object {
         const val THICC_ITEM_CASE_ID = "5c0a840b86f7742ffa4f2482"
     }
 
     suspend fun getAllToolNames(): Set<String> {
-        val crafts = tarkovDevClient.getCrafts()
+        val crafts = tarkovStorage.getFullCraftableTree()
 
-        return crafts.asSequence()
-            .flatMap { b ->
-                b.requiredItems.filterNotNull().filter { it.isTool() }
-            }.map { it.item.name }
-            .filterNotNull()
+        return crafts.values.asSequence()
+            .flatMap { it.crafts }
+            .flatMap { it.tools }
+            .map { it.fullName }
             .sorted()
             .toSet()
     }
 
     suspend fun getReactFlowTree(): ReactFlowGraph {
-        val crafts = tarkovDevClient.getCrafts()
-        val barters = tarkovDevClient.getBarters()
-
-        val idToItem: Map<String, GraphItem> = buildMap {
-            crafts.forEach { b ->
-                val components = b.requiredItems.toCraftComponents(this)
-                val tools = b.requiredItems.toTools(this)
-
-                b.rewardItems.filterNotNull()
-                    .forEach {
-                        it.item.toGraphItem(this).apply {
-                            val craft = Craft(
-                                result = this,
-                                count = it.count,
-                                components = components,
-                                tools = tools
-                            )
-                            this.crafts.add(craft)
-                            components.forEach { c -> c.item.usedIn.add(craft) }
-                        }
-                    }
-            }
-            barters.forEach { b ->
-                val components = b.requiredItems.toCraftComponents(this)
-
-                b.rewardItems.asSequence()
-                    .filterNotNull()
-                    .forEach {
-                        it.item.toGraphItem(this).apply {
-                            val craft = Craft(
-                                result = this,
-                                count = it.count,
-                                components = components,
-                                tools = emptySet()
-                            )
-                            this.crafts.add(craft)
-                            components.forEach { c -> c.item.usedIn.add(craft) }
-                        }
-                    }
-            }
-        }
+        val idToItem = tarkovStorage.getFullCraftableTree()
 
         // Exclude everything except selected item and its subtree
         val rootNode = idToItem[THICC_ITEM_CASE_ID]!!

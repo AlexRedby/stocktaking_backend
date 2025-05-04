@@ -11,6 +11,7 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import ru.alexredby.stocktaking.client.tarkovDevClientModule
 import ru.alexredby.stocktaking.service.tarkovServiceModule
+import ru.alexredby.stocktaking.service.tarkovStorageModule
 import ru.alexredby.stocktaking.tarkovdev.adapter.ktor.GraphqlSimpleKtorAdapter
 import ru.alexredby.stocktaking.tarkovdev.graphqlContextOf
 import ru.alexredby.stocktaking.tarkovdev.graphqlJson
@@ -18,7 +19,7 @@ import ru.alexredby.stocktaking.tarkovdev.graphqlJson
 fun Application.configureKoin() {
     install(Koin) {
         slf4jLogger()
-        modules(tarkovDevContextModule, tarkovDevClientModule, tarkovServiceModule)
+        modules(tarkovDevContextModule, tarkovDevClientModule, tarkovStorageModule, tarkovServiceModule)
     }
 }
 
