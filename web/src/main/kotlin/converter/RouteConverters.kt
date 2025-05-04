@@ -1,18 +1,16 @@
-package ru.alexredby.stocktaking.util
+package ru.alexredby.stocktaking.converter
 
 import ru.alexredby.stocktaking.dto.GraphItem
+import ru.alexredby.stocktaking.dto.ItemForComboBox
 import ru.alexredby.stocktaking.dto.ReactFlowEdge
 import ru.alexredby.stocktaking.dto.ReactFlowNode
 import ru.alexredby.stocktaking.dto.ReactFlowNodeData
-import kotlin.collections.flatMap
 
 fun Iterable<GraphItem>.toReactFlowNodes() = this.asSequence()
     .map {
         ReactFlowNode(
             id = it.id,
-            data = ReactFlowNodeData(
-                label = it.shortName
-            ),
+            data = ReactFlowNodeData(label = it.shortName),
         )
     }.toSet()
 
@@ -28,3 +26,9 @@ fun Iterable<GraphItem>.toReactFlowEdges() = this.asSequence()
             }
         }
     }.toSet()
+
+fun GraphItem.toItemForComboBox() = ItemForComboBox(
+    id = id,
+    fullName = fullName,
+    shortName = shortName,
+)

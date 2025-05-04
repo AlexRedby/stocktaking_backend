@@ -13,12 +13,19 @@ private val logger = KotlinLogging.logger {}
 
 fun Application.configureRouting() {
     routing {
-        getBarterTree()
+        getTarkovRoutes()
     }
 }
 
-fun Route.getBarterTree() {
+fun Route.getTarkovRoutes() {
     val tarkovService: TarkovService by inject()
+
+    get("/items") {
+        // TODO: Use delegated property here
+        val filter = call.queryParameters["filter"]
+        val items = tarkovService.getItems(filter)
+        call.respond(items)
+    }
 
     get("/crafting-tree") {
         val res = tarkovService.getReactFlowTree()

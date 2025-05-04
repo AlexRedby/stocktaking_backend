@@ -31,5 +31,4 @@ fun Item.toGraphItem(buffer: MutableMap<String, GraphItem>) = buffer.getOrPut(id
     )
 }
 
-fun ContainedItem.isTool() =
-    this.attributes?.any { it?.type == "tool" && it.value == "true" } == true
+fun ContainedItem.isTool() = this.attributes?.any { it?.type == "tool" && it.value == "true" } == true

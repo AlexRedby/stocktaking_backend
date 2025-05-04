@@ -3,12 +3,14 @@ package ru.alexredby.stocktaking.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import ru.alexredby.stocktaking.converter.toItemForComboBox
+import ru.alexredby.stocktaking.converter.toReactFlowEdges
+import ru.alexredby.stocktaking.converter.toReactFlowNodes
 import ru.alexredby.stocktaking.dto.GraphItem
+import ru.alexredby.stocktaking.dto.ItemForComboBox
 import ru.alexredby.stocktaking.dto.ReactFlowEdge
 import ru.alexredby.stocktaking.dto.ReactFlowGraph
 import ru.alexredby.stocktaking.dto.ReactFlowNode
-import ru.alexredby.stocktaking.util.toReactFlowEdges
-import ru.alexredby.stocktaking.util.toReactFlowNodes
 
 val logger = KotlinLogging.logger { }
 
@@ -21,7 +23,16 @@ class TarkovService(
 ) {
     companion object {
         const val THICC_ITEM_CASE_ID = "5c0a840b86f7742ffa4f2482"
+        val wordDelimiters = "([/\",.]|\\s)+".toRegex()
     }
+
+    suspend fun getItems(filter: String?): List<ItemForComboBox> = tarkovStorage
+        .getFullCraftableTree()
+        .values.asSequence()
+        .filter { filter.isNullOrBlank() || phraseSearch(filter, it.shortName, it.fullName) }
+        .map { it.toItemForComboBox() }
+        .sortedBy { it.fullName }
+        .toList()
 
     suspend fun getAllToolNames(): Set<String> {
         val crafts = tarkovStorage.getFullCraftableTree()
@@ -49,6 +60,14 @@ class TarkovService(
         searchForLoop(nodes.find { it.id == rootNode.id }!!, graph, mutableSetOf())
 
         return graph
+    }
+
+    private fun phraseSearch(phrase: String, vararg targets: String): Boolean {
+        val phraseRegex = phrase.split(wordDelimiters)
+            .joinToString(separator = "") { "\\b$it.*" }
+            .toRegex(RegexOption.IGNORE_CASE)
+
+        return targets.any { it.contains(phraseRegex) }
     }
 
     private fun findAllItemsInSubTreeFor(root: GraphItem, visitedIds: MutableSet<String>): Set<GraphItem> {
