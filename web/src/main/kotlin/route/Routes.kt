@@ -20,7 +20,7 @@ fun Application.configureRouting() {
 fun Route.getTarkovRoutes() {
     val tarkovService: TarkovService by inject()
 
-    get("/items") {
+    get("/craftable-items") {
         // TODO: Use delegated property here
         val filter = call.queryParameters["filter"]
         val items = tarkovService.getItems(filter)
@@ -28,7 +28,8 @@ fun Route.getTarkovRoutes() {
     }
 
     get("/crafting-tree") {
-        val res = tarkovService.getReactFlowTree()
+        val targetItemId = call.queryParameters["target_item_id"]
+        val res = tarkovService.getReactFlowTree(targetItemId)
         logger.info { "Successfully created tree for react-flow!" }
         call.respond(res)
     }

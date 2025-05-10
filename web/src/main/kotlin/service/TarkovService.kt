@@ -34,22 +34,22 @@ class TarkovService(
         .sortedBy { it.fullName }
         .toList()
 
-    suspend fun getAllToolNames(): Set<String> {
-        val crafts = tarkovStorage.getFullCraftableTree()
+    suspend fun getAllToolNames(): Set<String> = tarkovStorage
+        .getFullCraftableTree()
+        .values.asSequence()
+        .flatMap { it.crafts }
+        .flatMap { it.tools }
+        .map { it.fullName }
+        .sorted()
+        .toSet()
 
-        return crafts.values.asSequence()
-            .flatMap { it.crafts }
-            .flatMap { it.tools }
-            .map { it.fullName }
-            .sorted()
-            .toSet()
-    }
-
-    suspend fun getReactFlowTree(): ReactFlowGraph {
+    suspend fun getReactFlowTree(targetItemId: String?): ReactFlowGraph {
         val idToItem = tarkovStorage.getFullCraftableTree()
 
+        logger.info { "Requested crafting tree for item with id = $targetItemId" }
+
         // Exclude everything except selected item and its subtree
-        val rootNode = idToItem[THICC_ITEM_CASE_ID]!!
+        val rootNode = idToItem[targetItemId ?: THICC_ITEM_CASE_ID]!!
         val neededItems = findAllItemsInSubTreeFor(rootNode, mutableSetOf())
 
         val nodes = neededItems.toReactFlowNodes()
