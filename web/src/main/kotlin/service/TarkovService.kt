@@ -23,7 +23,7 @@ class TarkovService(
 ) {
     companion object {
         const val THICC_ITEM_CASE_ID = "5c0a840b86f7742ffa4f2482"
-        val wordDelimiters = "([/\",.]|\\s)+".toRegex()
+        val wordDelimiters = "([#/\",.]|\\s)+".toRegex()
     }
 
     suspend fun getItems(filter: String?): List<ItemForComboBox> = tarkovStorage
