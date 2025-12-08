@@ -3,9 +3,8 @@ version = "1.0-SNAPSHOT"
 
 plugins {
     ru.alexredby.convention.`kotlin-jvm`
-    // TODO: Move version in libs.versions.toml
-    kotlin("plugin.serialization") version "2.1.10"
-    id("io.github.ermadmi78.kobby") version "4.1.1" // TODO: Check alternative - Apollo
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kobby) // TODO: Check alternative - Apollo
 }
 
 dependencies {
@@ -24,7 +23,7 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
 
     // DI in ktor 3.x
-    implementation(libs.koin.ktor3)
+    implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)
 
     // Need for the embedded server (EngineMain)
