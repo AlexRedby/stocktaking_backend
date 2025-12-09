@@ -5,52 +5,52 @@ type Achievement {
     """
     A unique 24-character hexadecimal identifier for the achievement. Follows a consistent format across all achievements.
     """
-  id: ID!
+    id: ID!
 
     """
     The display name of the achievement (e.g., "Welcome to Tarkov", "The Kappa Path").
     """
-  name: String!
+    name: String!
 
     """
     Text describing the conditions required to unlock the achievement (e.g., "Neutralize Killa 15 times while playing as a PMC").
     """
-  description: String
+    description: String
 
     """
     Whether the achievement is hidden from players until unlocked (true) or visible from the start (false).
     """
-  hidden: Boolean!
+    hidden: Boolean!
 
     """
     Raw percentage of all players who have completed this achievement (e.g., 0.06, 43.48).
     """
-  playersCompletedPercent: Float!
+    playersCompletedPercent: Float!
 
     """
     Statistically adjusted percentage that accounts for active players, providing a more representative completion rate. Uses the percentage completion of Welcome to Tarkov as the baseline under the assumption that all active accounts have died once.
     """
-  adjustedPlayersCompletedPercent: Float
+    adjustedPlayersCompletedPercent: Float
 
     """
     The game faction or player type this achievement is associated with. Values include "PMC", "All", or "Scavs".
     """
-  side: String
+    side: String
 
     """
     Lowercase, standardized version of the side field used for consistent sorting and filtering (e.g., "pmc", "all", "scavs").
     """
-  normalizedSide: String
+    normalizedSide: String
 
     """
     The difficulty/rarity tier of the achievement. Values include "Common", "Rare", or "Legendary".
     """
-  rarity: String
+    rarity: String
 
     """
     Lowercase, standardized version of the rarity field used for consistent sorting and filtering (e.g., "common", "rare", "legendary").
     """
-  normalizedRarity: String
+    normalizedRarity: String
 
     """
     URL to the achievement's image.
@@ -79,51 +79,51 @@ The `Float` scalar type represents signed double-precision fractional values as 
 scalar Float
 
 type Ammo {
-  item: Item!
+    item: Item!
 
-  weight: Float!
+    weight: Float!
 
-  caliber: String
+    caliber: String
 
-  stackMaxSize: Int!
+    stackMaxSize: Int!
 
-  tracer: Boolean!
+    tracer: Boolean!
 
-  tracerColor: String
+    tracerColor: String
 
-  ammoType: String!
+    ammoType: String!
 
-  projectileCount: Int
+    projectileCount: Int
 
-  damage: Int!
+    damage: Int!
 
-  armorDamage: Int!
+    armorDamage: Int!
 
-  fragmentationChance: Float!
+    fragmentationChance: Float!
 
-  ricochetChance: Float!
+    ricochetChance: Float!
 
-  penetrationChance: Float!
+    penetrationChance: Float!
 
-  penetrationPower: Int!
+    penetrationPower: Int!
 
-  penetrationPowerDeviation: Float
+    penetrationPowerDeviation: Float
 
-  accuracy: Int @deprecated(reason: "Use accuracyModifier instead.")
+    accuracy: Int @deprecated(reason: "Use accuracyModifier instead.")
 
-  accuracyModifier: Float
+    accuracyModifier: Float
 
-  recoil: Int @deprecated(reason: "Use recoilModifier instead.")
+    recoil: Int @deprecated(reason: "Use recoilModifier instead.")
 
-  recoilModifier: Float
+    recoilModifier: Float
 
-  initialSpeed: Float
+    initialSpeed: Float
 
-  lightBleedModifier: Float!
+    lightBleedModifier: Float!
 
-  heavyBleedModifier: Float!
+    heavyBleedModifier: Float!
 
-  staminaBurnPerDamage: Float
+    staminaBurnPerDamage: Float
 }
 
 """
@@ -132,57 +132,57 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 scalar Int
 
 type ArmorMaterial {
-  id: String
+    id: String
 
-  name: String
+    name: String
 
-  destructibility: Float
+    destructibility: Float
 
-  minRepairDegradation: Float
+    minRepairDegradation: Float
 
-  maxRepairDegradation: Float
+    maxRepairDegradation: Float
 
-  explosionDestructibility: Float
+    explosionDestructibility: Float
 
-  minRepairKitDegradation: Float
+    minRepairKitDegradation: Float
 
-  maxRepairKitDegradation: Float
+    maxRepairKitDegradation: Float
 }
 
 type AttributeThreshold {
-  name: String!
+    name: String!
 
-  requirement: NumberCompare!
+    requirement: NumberCompare!
 }
 
 type Barter {
-  id: ID!
+    id: ID!
 
-  trader: Trader!
+    trader: Trader!
 
-  level: Int!
+    level: Int!
 
-  taskUnlock: Task
+    taskUnlock: Task
 
-  requiredItems: [ContainedItem]!
+    requiredItems: [ContainedItem]!
 
-  rewardItems: [ContainedItem]!
+    rewardItems: [ContainedItem]!
 
-  source: String! @deprecated(reason: "Use trader and level instead.")
+    source: String! @deprecated(reason: "Use trader and level instead.")
 
-  sourceName: ItemSourceName! @deprecated(reason: "Use trader instead.")
+    sourceName: ItemSourceName! @deprecated(reason: "Use trader instead.")
 
-  requirements: [PriceRequirement]! @deprecated(reason: "Use level instead.")
+    requirements: [PriceRequirement]! @deprecated(reason: "Use level instead.")
 
-  buyLimit: Int
+    buyLimit: Int
 }
 
 type BossSpawn {
-  boss: MobInfo!
+    boss: MobInfo!
 
-  spawnChance: Float!
+    spawnChance: Float!
 
-  spawnLocations: [BossSpawnLocation]!
+    spawnLocations: [BossSpawnLocation]!
 
     escorts: [BossEscort]!
 
@@ -200,7 +200,7 @@ type BossSpawn {
 }
 
 type BossEscort {
-  boss: MobInfo!
+    boss: MobInfo!
 
     amount: [BossEscortAmount]
 
@@ -210,17 +210,17 @@ type BossEscort {
 }
 
 type BossEscortAmount {
-  count: Int!
+    count: Int!
 
     chance: Float!
 }
 
 """
-The chances of spawning in a given location are 
+The chances of spawning in a given location are
 very rough estimates and may be incaccurate
 """
 type BossSpawnLocation {
-  spawnKey: String!
+    spawnKey: String!
 
     name: String!
 
@@ -228,7 +228,7 @@ type BossSpawnLocation {
 }
 
 type ContainedItem {
-  item: Item!
+    item: Item!
 
     count: Float!
 
@@ -238,7 +238,7 @@ type ContainedItem {
 }
 
 type Craft {
-  id: ID!
+    id: ID!
 
     station: HideoutStation!
 
@@ -300,7 +300,7 @@ type CustomizationItems implements CustomizationItem {
 }
 
 type GameProperty {
-  key: String!
+    key: String!
 
     numericValue: Float
 
@@ -312,7 +312,7 @@ type GameProperty {
 }
 
 type FleaMarket implements Vendor {
-  name: String!
+    name: String!
 
     normalizedName: String!
 
@@ -330,7 +330,7 @@ type FleaMarket implements Vendor {
 }
 
 type FleaMarketReputationLevel {
-  offers: Int!
+    offers: Int!
 
     offersSpecialEditions: Int!
 
@@ -340,19 +340,19 @@ type FleaMarketReputationLevel {
 }
 
 enum GameMode {
-  regular
+    regular
 
     pve
 }
 
 type GoonReport {
-  map: Map
+    map: Map
 
     timestamp: String
 }
 
 type HealthEffect {
-  bodyParts: [String]!
+    bodyParts: [String]!
 
     effects: [String]!
 
@@ -360,7 +360,7 @@ type HealthEffect {
 }
 
 type HealthPart {
-  id: ID!
+    id: ID!
 
     max: Int!
 
@@ -368,7 +368,7 @@ type HealthPart {
 }
 
 type HideoutStation {
-  id: ID!
+    id: ID!
 
     name: String!
 
@@ -383,11 +383,11 @@ type HideoutStation {
     """
     crafts is only available via the hideoutStations query.
     """
-  crafts: [Craft]!
+    crafts: [Craft]!
 }
 
 type HideoutStationBonus {
-  type: String!
+    type: String!
 
     name: String!
 
@@ -403,7 +403,7 @@ type HideoutStationBonus {
 }
 
 type HideoutStationLevel {
-  id: ID!
+    id: ID!
 
     level: Int!
 
@@ -424,13 +424,13 @@ type HideoutStationLevel {
     """
     crafts is only available via the hideoutStations query.
     """
-  crafts: [Craft]!
+    crafts: [Craft]!
 
     bonuses: [HideoutStationBonus]
 }
 
 type historicalPricePoint {
-  price: Int
+    price: Int
 
     priceMin: Int
 
@@ -442,7 +442,7 @@ type historicalPricePoint {
 }
 
 type Item {
-  id: ID!
+    id: ID!
 
     name: String
 
@@ -545,7 +545,7 @@ type Item {
     """
     historicalPrices is only available via the item and items queries.
     """
-  historicalPrices: [historicalPricePoint]
+    historicalPrices: [historicalPricePoint]
 
     fleaMarketFee(price: Int, intelCenterLevel: Int, hideoutManagementLevel: Int, count: Int, requireAll: Boolean): Int
 
@@ -567,13 +567,13 @@ type Item {
 }
 
 interface ItemArmorSlot {
-  nameId: String
+    nameId: String
 
     zones: [String]
 }
 
 type ItemArmorSlotLocked implements ItemArmorSlot {
-  nameId: String
+    nameId: String
 
     name: String
 
@@ -607,7 +607,7 @@ type ItemArmorSlotLocked implements ItemArmorSlot {
 }
 
 type ItemArmorSlotOpen implements ItemArmorSlot {
-  nameId: String
+    nameId: String
 
     name: String
 
@@ -617,7 +617,7 @@ type ItemArmorSlotOpen implements ItemArmorSlot {
 }
 
 type ItemAttribute {
-  type: String!
+    type: String!
 
     name: String!
 
@@ -625,7 +625,7 @@ type ItemAttribute {
 }
 
 type ItemCategory {
-  id: ID!
+    id: ID!
 
     name: String!
 
@@ -642,7 +642,7 @@ type ItemCategory {
 }
 
 type ItemFilters {
-  allowedCategories: [ItemCategory]!
+    allowedCategories: [ItemCategory]!
 
     allowedItems: [Item]!
 
@@ -652,7 +652,7 @@ type ItemFilters {
 }
 
 type ItemPrice {
-  vendor: Vendor!
+    vendor: Vendor!
 
     price: Int
 
@@ -668,7 +668,7 @@ type ItemPrice {
 }
 
 type ItemPropertiesAmmo {
-  caliber: String
+    caliber: String
 
     stackMaxSize: Int
 
@@ -726,7 +726,7 @@ type ItemPropertiesAmmo {
 }
 
 type ItemPropertiesArmor {
-  class: Int
+    class: Int
 
     durability: Int
 
@@ -750,7 +750,7 @@ type ItemPropertiesArmor {
 }
 
 type ItemPropertiesArmorAttachment {
-  class: Int
+    class: Int
 
     durability: Int
 
@@ -778,7 +778,7 @@ type ItemPropertiesArmorAttachment {
 }
 
 type ItemPropertiesBackpack {
-  capacity: Int
+    capacity: Int
 
     grids: [ItemStorageGrid]
 
@@ -792,7 +792,7 @@ type ItemPropertiesBackpack {
 }
 
 type ItemPropertiesBarrel {
-  ergonomics: Float
+    ergonomics: Float
 
     recoil: Float @deprecated(reason: "Use recoilModifier instead.")
 
@@ -810,7 +810,7 @@ type ItemPropertiesBarrel {
 }
 
 type ItemPropertiesChestRig {
-  class: Int
+    class: Int
 
     durability: Int
 
@@ -840,13 +840,13 @@ type ItemPropertiesChestRig {
 }
 
 type ItemPropertiesContainer {
-  capacity: Int
+    capacity: Int
 
     grids: [ItemStorageGrid]
 }
 
 type ItemPropertiesFoodDrink {
-  energy: Int
+    energy: Int
 
     hydration: Int
 
@@ -856,7 +856,7 @@ type ItemPropertiesFoodDrink {
 }
 
 type ItemPropertiesGlasses {
-  class: Int
+    class: Int
 
     durability: Int
 
@@ -866,13 +866,13 @@ type ItemPropertiesGlasses {
 
     ergoPenalty: Float
 
-  material: ArmorMaterial
+    material: ArmorMaterial
 
     bluntThroughput: Float
 }
 
 type ItemPropertiesGrenade {
-  type: String
+    type: String
 
     fuse: Float
 
@@ -886,7 +886,7 @@ type ItemPropertiesGrenade {
 }
 
 type ItemPropertiesHeadphone {
-  ambientVolume: Int
+    ambientVolume: Int
 
     compressorAttack: Int
 
@@ -912,11 +912,11 @@ type ItemPropertiesHeadphone {
 }
 
 type ItemPropertiesHeadwear {
-  slots: [ItemSlot]
+    slots: [ItemSlot]
 }
 
 type ItemPropertiesHelmet {
-  class: Int
+    class: Int
 
     durability: Int
 
@@ -954,11 +954,11 @@ type ItemPropertiesHelmet {
 }
 
 type ItemPropertiesKey {
-  uses: Int
+    uses: Int
 }
 
 type ItemPropertiesMagazine {
-  ergonomics: Float
+    ergonomics: Float
 
     recoil: Float @deprecated(reason: "Use recoilModifier instead.")
 
@@ -978,7 +978,7 @@ type ItemPropertiesMagazine {
 }
 
 type ItemPropertiesMedicalItem {
-  uses: Int
+    uses: Int
 
     useTime: Int
 
@@ -986,7 +986,7 @@ type ItemPropertiesMedicalItem {
 }
 
 type ItemPropertiesMedKit {
-  hitpoints: Int
+    hitpoints: Int
 
     useTime: Int
 
@@ -1000,7 +1000,7 @@ type ItemPropertiesMedKit {
 }
 
 type ItemPropertiesMelee {
-  slashDamage: Int
+    slashDamage: Int
 
     stabDamage: Int
 
@@ -1008,7 +1008,7 @@ type ItemPropertiesMelee {
 }
 
 type ItemPropertiesNightVision {
-  intensity: Float
+    intensity: Float
 
     noiseIntensity: Float
 
@@ -1018,7 +1018,7 @@ type ItemPropertiesNightVision {
 }
 
 type ItemPropertiesPainkiller {
-  uses: Int
+    uses: Int
 
     useTime: Int
 
@@ -1032,7 +1032,7 @@ type ItemPropertiesPainkiller {
 }
 
 type ItemPropertiesPreset {
-  baseItem: Item!
+    baseItem: Item!
 
     ergonomics: Float
 
@@ -1046,11 +1046,11 @@ type ItemPropertiesPreset {
 }
 
 type ItemPropertiesResource {
-  units: Int
+    units: Int
 }
 
 type ItemPropertiesScope {
-  ergonomics: Float
+    ergonomics: Float
 
     sightModes: [Int]
 
@@ -1066,7 +1066,7 @@ type ItemPropertiesScope {
 }
 
 type ItemPropertiesStim {
-  useTime: Int
+    useTime: Int
 
     cures: [String]
 
@@ -1074,7 +1074,7 @@ type ItemPropertiesStim {
 }
 
 type ItemPropertiesSurgicalKit {
-  uses: Int
+    uses: Int
 
     useTime: Int
 
@@ -1086,7 +1086,7 @@ type ItemPropertiesSurgicalKit {
 }
 
 type ItemPropertiesWeapon {
-  caliber: String
+    caliber: String
 
     defaultAmmo: Item
 
@@ -1146,7 +1146,7 @@ type ItemPropertiesWeapon {
 }
 
 type ItemPropertiesWeaponMod {
-  ergonomics: Float
+    ergonomics: Float
 
     recoil: Float @deprecated(reason: "Use recoilModifier instead.")
 
@@ -1160,7 +1160,7 @@ type ItemPropertiesWeaponMod {
 union ItemProperties = ItemPropertiesAmmo|ItemPropertiesArmor|ItemPropertiesArmorAttachment|ItemPropertiesBackpack|ItemPropertiesBarrel|ItemPropertiesChestRig|ItemPropertiesContainer|ItemPropertiesFoodDrink|ItemPropertiesGlasses|ItemPropertiesGrenade|ItemPropertiesHeadwear|ItemPropertiesHeadphone|ItemPropertiesHelmet|ItemPropertiesKey|ItemPropertiesMagazine|ItemPropertiesMedicalItem|ItemPropertiesMelee|ItemPropertiesMedKit|ItemPropertiesNightVision|ItemPropertiesPainkiller|ItemPropertiesPreset|ItemPropertiesResource|ItemPropertiesScope|ItemPropertiesSurgicalKit|ItemPropertiesWeapon|ItemPropertiesWeaponMod|ItemPropertiesStim
 
 type ItemSlot {
-  id: ID!
+    id: ID!
 
     name: String!
 
@@ -1172,7 +1172,7 @@ type ItemSlot {
 }
 
 enum ItemSourceName {
-  prapor
+    prapor
 
     therapist
 
@@ -1194,7 +1194,7 @@ enum ItemSourceName {
 }
 
 type ItemStorageGrid {
-  width: Int!
+    width: Int!
 
     height: Int!
 
@@ -1202,7 +1202,7 @@ type ItemStorageGrid {
 }
 
 type Lock {
-  lockType: String
+    lockType: String
 
     key: Item
 
@@ -1218,7 +1218,7 @@ type Lock {
 }
 
 type LootContainer {
-  id: ID!
+    id: ID!
 
     name: String!
 
@@ -1226,7 +1226,7 @@ type LootContainer {
 }
 
 type LootContainerPosition {
-  lootContainer: LootContainer
+    lootContainer: LootContainer
 
     position: MapPosition
 }
@@ -1234,11 +1234,11 @@ type LootContainerPosition {
 type LootLoosePosition {
     items: [Item]
 
-  position: MapPosition
+    position: MapPosition
 }
 
 type Map {
-  id: ID!
+    id: ID!
 
     tarkovDataId: ID
 
@@ -1284,7 +1284,7 @@ type Map {
 
     lootLoose: [LootLoosePosition]
 
-  stationaryWeapons: [StationaryWeaponPosition]
+    stationaryWeapons: [StationaryWeaponPosition]
 
     artillery: MapArtillerySettings
 
@@ -1292,11 +1292,11 @@ type Map {
 }
 
 type MapArtillerySettings {
-  zones: [MapArtilleryZone]
+    zones: [MapArtilleryZone]
 }
 
 type MapArtilleryZone {
-  position: MapPosition
+    position: MapPosition
 
     outline: [MapPosition]
 
@@ -1308,7 +1308,7 @@ type MapArtilleryZone {
 }
 
 type MapExtract {
-  id: ID!
+    id: ID!
 
     name: String
 
@@ -1318,7 +1318,7 @@ type MapExtract {
 
     transferItem: ContainedItem
 
-  position: MapPosition
+    position: MapPosition
 
     outline: [MapPosition]
 
@@ -1328,7 +1328,7 @@ type MapExtract {
 }
 
 type MapHazard {
-  hazardType: String
+    hazardType: String
 
     name: String
 
@@ -1342,13 +1342,13 @@ type MapHazard {
 }
 
 type MapWithPosition {
-  map: Map
+    map: Map
 
     positions: [MapPosition]
 }
 
 type MapPosition {
-  x: Float!
+    x: Float!
 
     y: Float!
 
@@ -1360,13 +1360,13 @@ type MapPositionNamed {
 
     x: Float!
 
-  y: Float!
+    y: Float!
 
     z: Float!
 }
 
 type MapSpawn {
-  zoneName: String
+    zoneName: String
 
     position: MapPosition!
 
@@ -1376,7 +1376,7 @@ type MapSpawn {
 }
 
 type MapSwitch {
-  id: ID!
+    id: ID!
 
     name: String
 
@@ -1390,7 +1390,7 @@ type MapSwitch {
 }
 
 type MapSwitchOperation {
-  operation: String
+    operation: String
 
     target: MapSwitchTarget
 }
@@ -1398,7 +1398,7 @@ type MapSwitchOperation {
 union MapSwitchTarget = MapSwitch|MapExtract
 
 type MapTransit {
-  id: ID!
+    id: ID!
 
     description: String
 
@@ -1416,7 +1416,7 @@ type MapTransit {
 }
 
 type Mastering {
-  id: ID!
+    id: ID!
 
     weapons: [Item]!
 
@@ -1426,7 +1426,7 @@ type Mastering {
 }
 
 type MobInfo {
-  id: ID!
+    id: ID!
 
     name: String!
 
@@ -1441,19 +1441,19 @@ type MobInfo {
     """
     equipment and items are estimates and may be inaccurate.
     """
-  equipment: [ContainedItem]!
+    equipment: [ContainedItem]!
 
     items: [Item]!
 }
 
 type NumberCompare {
-  compareMethod: String!
+    compareMethod: String!
 
     value: Float!
 }
 
 type OfferUnlock {
-  id: ID!
+    id: ID!
 
     trader: Trader!
 
@@ -1463,7 +1463,7 @@ type OfferUnlock {
 }
 
 type PlayerLevel {
-  level: Int!
+    level: Int!
 
     exp: Int!
 
@@ -1507,7 +1507,7 @@ type PrestigeTransferSettingsSkill {
 }
 
 type PriceRequirement {
-  type: RequirementType!
+    type: RequirementType!
 
     value: Int
 
@@ -1515,7 +1515,7 @@ type PriceRequirement {
 }
 
 type QuestItem {
-  id: ID
+    id: ID
 
     name: String!
 
@@ -1543,7 +1543,7 @@ type QuestItem {
 }
 
 type RequirementHideoutStationLevel {
-  id: ID
+    id: ID
 
     station: HideoutStation!
 
@@ -1551,7 +1551,7 @@ type RequirementHideoutStationLevel {
 }
 
 type RequirementItem {
-  id: ID
+    id: ID
 
     item: Item!
 
@@ -1563,7 +1563,7 @@ type RequirementItem {
 }
 
 type RequirementSkill {
-  id: ID
+    id: ID
 
     name: String!
 
@@ -1573,13 +1573,13 @@ type RequirementSkill {
 }
 
 type RequirementTask {
-  id: ID
+    id: ID
 
     task: Task!
 }
 
 type RequirementTrader {
-  id: ID
+    id: ID
 
     trader: Trader!
 
@@ -1593,7 +1593,7 @@ type RequirementTrader {
 }
 
 enum RequirementType {
-  playerLevel
+    playerLevel
 
     loyaltyLevel
 
@@ -1603,7 +1603,7 @@ enum RequirementType {
 }
 
 type ServerStatus {
-  generalStatus: Status
+    generalStatus: Status
 
     currentStatuses: [Status]
 
@@ -1611,7 +1611,7 @@ type ServerStatus {
 }
 
 type Skill {
-  id: ID
+    id: ID
 
     name: String
 
@@ -1619,7 +1619,7 @@ type Skill {
 }
 
 type SkillLevel {
-  skill: Skill!
+    skill: Skill!
 
     name: String!
 
@@ -1627,7 +1627,7 @@ type SkillLevel {
 }
 
 type StationaryWeapon {
-  id: ID
+    id: ID
 
     name: String
 
@@ -1635,13 +1635,13 @@ type StationaryWeapon {
 }
 
 type StationaryWeaponPosition {
-  stationaryWeapon: StationaryWeapon
+    stationaryWeapon: StationaryWeapon
 
     position: MapPosition
 }
 
 type Status {
-  name: String!
+    name: String!
 
     message: String
 
@@ -1651,7 +1651,7 @@ type Status {
 }
 
 enum StatusCode {
-  OK
+    OK
 
     Updating
 
@@ -1661,7 +1661,7 @@ enum StatusCode {
 }
 
 type StatusMessage {
-  content: String!
+    content: String!
 
     time: String!
 
@@ -1673,7 +1673,7 @@ type StatusMessage {
 }
 
 type StimEffect {
-  type: String!
+    type: String!
 
     chance: Float!
 
@@ -1691,7 +1691,7 @@ type StimEffect {
 }
 
 type Task {
-  id: ID
+    id: ID
 
     tarkovDataId: Int
 
@@ -1735,7 +1735,7 @@ type Task {
 
     requiredPrestige: Prestige
 
-  neededKeys: [TaskKey] @deprecated(reason: "Use requiredKeys on objectives instead.")
+    neededKeys: [TaskKey] @deprecated(reason: "Use requiredKeys on objectives instead.")
 
     kappaRequired: Boolean
 
@@ -1753,13 +1753,13 @@ type Task {
 }
 
 type TaskKey {
-  keys: [Item]!
+    keys: [Item]!
 
     map: Map
 }
 
 interface TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1771,7 +1771,7 @@ interface TaskObjective {
 }
 
 type TaskObjectiveBasic implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1787,7 +1787,7 @@ type TaskObjectiveBasic implements TaskObjective {
 }
 
 type TaskObjectiveBuildItem implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1809,7 +1809,7 @@ type TaskObjectiveBuildItem implements TaskObjective {
 }
 
 type TaskObjectiveExperience implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1825,7 +1825,7 @@ type TaskObjectiveExperience implements TaskObjective {
 }
 
 type TaskObjectiveExtract implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1863,7 +1863,7 @@ type TaskObjectiveHideoutStation implements TaskObjective {
 }
 
 type TaskObjectiveItem implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1893,7 +1893,7 @@ type TaskObjectiveItem implements TaskObjective {
 }
 
 type TaskObjectiveMark implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1911,7 +1911,7 @@ type TaskObjectiveMark implements TaskObjective {
 }
 
 type TaskObjectivePlayerLevel implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1925,7 +1925,7 @@ type TaskObjectivePlayerLevel implements TaskObjective {
 }
 
 type TaskObjectiveQuestItem implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1947,7 +1947,7 @@ type TaskObjectiveQuestItem implements TaskObjective {
 }
 
 type TaskObjectiveShoot implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -1993,7 +1993,7 @@ type TaskObjectiveShoot implements TaskObjective {
 }
 
 type TaskObjectiveSkill implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -2007,7 +2007,7 @@ type TaskObjectiveSkill implements TaskObjective {
 }
 
 type TaskObjectiveTaskStatus implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -2023,7 +2023,7 @@ type TaskObjectiveTaskStatus implements TaskObjective {
 }
 
 type TaskObjectiveTraderLevel implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -2039,7 +2039,7 @@ type TaskObjectiveTraderLevel implements TaskObjective {
 }
 
 type TaskObjectiveTraderStanding implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -2057,7 +2057,7 @@ type TaskObjectiveTraderStanding implements TaskObjective {
 }
 
 type TaskObjectiveUseItem implements TaskObjective {
-  id: ID
+    id: ID
 
     type: String!
 
@@ -2081,7 +2081,7 @@ type TaskObjectiveUseItem implements TaskObjective {
 }
 
 type TaskRewards {
-  traderStanding: [TraderStanding]!
+    traderStanding: [TraderStanding]!
 
     items: [ContainedItem]!
 
@@ -2099,13 +2099,13 @@ type TaskRewards {
 }
 
 type TaskStatusRequirement {
-  task: Task!
+    task: Task!
 
     status: [String]!
 }
 
 type TaskZone {
-  id: ID!
+    id: ID!
 
     map: Map
 
@@ -2119,7 +2119,7 @@ type TaskZone {
 }
 
 type Trader {
-  id: ID!
+    id: ID!
 
     name: String!
 
@@ -2140,7 +2140,7 @@ type Trader {
     """
     barters and cashOffers are only available via the traders query.
     """
-  barters: [Barter]!
+    barters: [Barter]!
 
     cashOffers: [TraderCashOffer]!
 
@@ -2152,7 +2152,7 @@ type Trader {
 }
 
 type TraderLevel {
-  id: ID!
+    id: ID!
 
     level: Int!
 
@@ -2171,7 +2171,7 @@ type TraderLevel {
     """
     barters and cashOffers are only available via the traders query.
     """
-  barters: [Barter]!
+    barters: [Barter]!
 
     cashOffers: [TraderCashOffer]!
 
@@ -2183,7 +2183,7 @@ type TraderLevel {
 type TraderCashOffer {
     id: ID
 
-  item: Item!
+    item: Item!
 
     minTraderLevel: Int
 
@@ -2201,7 +2201,7 @@ type TraderCashOffer {
 }
 
 enum TraderName {
-  prapor
+    prapor
 
     therapist
 
@@ -2221,7 +2221,7 @@ enum TraderName {
 }
 
 type TraderOffer implements Vendor {
-  name: String!
+    name: String!
 
     normalizedName: String!
 
@@ -2237,7 +2237,7 @@ type TraderOffer implements Vendor {
 union TraderReputationLevel = TraderReputationLevelFence
 
 type TraderReputationLevelFence {
-  minimumReputation: Int!
+    minimumReputation: Int!
 
     scavCooldownModifier: Float
 
@@ -2271,19 +2271,19 @@ type TraderReputationLevelFence {
 }
 
 type TraderStanding {
-  trader: Trader!
+    trader: Trader!
 
     standing: Float!
 }
 
 interface Vendor {
-  name: String!
+    name: String!
 
     normalizedName: String!
 }
 
 type Query {
-  achievements(lang: LanguageCode, limit: Int, offset: Int): [Achievement]!
+    achievements(lang: LanguageCode, limit: Int, offset: Int): [Achievement]!
 
     ammo(lang: LanguageCode, gameMode: GameMode, limit: Int, offset: Int): [Ammo]
 
@@ -2335,7 +2335,7 @@ type Query {
 
     prestige(lang: LanguageCode, gameMode: GameMode): [Prestige]!
 
-  skills(lang: LanguageCode): [Skill]!
+    skills(lang: LanguageCode): [Skill]!
 
     mastering(lang: LanguageCode): [Mastering]!
 
@@ -2361,7 +2361,7 @@ The below types are all deprecated and may not return current data.
 ItemTranslation has been replaced with the lang argument on all queries
 """
 type ItemTranslation {
-  name: String @deprecated(reason: "Use the lang argument on queries instead.")
+    name: String @deprecated(reason: "Use the lang argument on queries instead.")
 
     shortName: String @deprecated(reason: "Use the lang argument on queries instead.")
 
@@ -2372,7 +2372,7 @@ type ItemTranslation {
 HideoutModule has been replaced with HideoutStation.
 """
 type HideoutModule {
-  id: Int @deprecated(reason: "Use HideoutStation type instead.")
+    id: Int @deprecated(reason: "Use HideoutStation type instead.")
 
     name: String @deprecated(reason: "Use HideoutStation type instead.")
 
@@ -2387,7 +2387,7 @@ type HideoutModule {
 Quest has been replaced with Task.
 """
 type Quest {
-  id: String! @deprecated(reason: "Use Task type instead.")
+    id: String! @deprecated(reason: "Use Task type instead.")
 
     requirements: QuestRequirement @deprecated(reason: "Use Task type instead.")
 
@@ -2412,7 +2412,7 @@ type Quest {
 QuestObjective has been replaced with TaskObjective.
 """
 type QuestObjective {
-  id: String @deprecated(reason: "Use Task type instead.")
+    id: String @deprecated(reason: "Use Task type instead.")
 
     type: String! @deprecated(reason: "Use Task type instead.")
 
@@ -2429,7 +2429,7 @@ type QuestObjective {
 QuestRequirement has been replaced with TaskRequirement.
 """
 type QuestRequirement {
-  level: Int @deprecated(reason: "Use Task type instead.")
+    level: Int @deprecated(reason: "Use Task type instead.")
 
     quests: [[Int]]! @deprecated(reason: "Use Task type instead.")
 
@@ -2437,7 +2437,7 @@ type QuestRequirement {
 }
 
 type QuestRewardReputation {
-  trader: Trader! @deprecated(reason: "Use Task type instead.")
+    trader: Trader! @deprecated(reason: "Use Task type instead.")
 
     amount: Float! @deprecated(reason: "Use Task type instead.")
 }
@@ -2446,7 +2446,7 @@ type QuestRewardReputation {
 TraderPrice is deprecated and replaced with ItemPrice.
 """
 type TraderPrice {
-  price: Int! @deprecated(reason: "Use item.buyFor instead.")
+    price: Int! @deprecated(reason: "Use item.buyFor instead.")
 
     currency: String! @deprecated(reason: "Use item.buyFor instead.")
 
@@ -2459,13 +2459,13 @@ type TraderPrice {
 TraderResetTime is deprecated and replaced with Trader.
 """
 type TraderResetTime {
-  name: String @deprecated(reason: "Use Trader.name type instead.")
+    name: String @deprecated(reason: "Use Trader.name type instead.")
 
     resetTimestamp: String @deprecated(reason: "Use Trader.resetTime type instead.")
 }
 
 enum ItemType {
-  ammo
+    ammo
 
     ammoBox
 
@@ -2517,7 +2517,7 @@ enum ItemType {
 }
 
 enum ItemCategoryName {
-  Ammo
+    Ammo
 
     AmmoContainer
 
@@ -2565,7 +2565,7 @@ enum ItemCategoryName {
 
     Completable
 
-  CompoundItem
+    CompoundItem
 
     CultistAmulet
 
@@ -2573,7 +2573,7 @@ enum ItemCategoryName {
 
     DialogItem
 
-  Drink
+    Drink
 
     Drug
 
@@ -2667,7 +2667,7 @@ enum ItemCategoryName {
 
     Notes
 
-  Other
+    Other
 
     PistolGrip
 
@@ -2685,7 +2685,7 @@ enum ItemCategoryName {
 
     Recorder
 
-  ReflexSight
+    ReflexSight
 
     RepairKits
 
@@ -2695,7 +2695,7 @@ enum ItemCategoryName {
 
     RocketLauncher
 
-  SMG
+    SMG
 
     Scope
 
@@ -2723,7 +2723,7 @@ enum ItemCategoryName {
 
     Tapes
 
-  ThermalVision
+    ThermalVision
 
     ThrowableWeapon
 
@@ -2739,7 +2739,7 @@ enum ItemCategoryName {
 }
 
 enum HandbookCategoryName {
-  Ammo
+    Ammo
 
     AmmoPacks
 
@@ -2751,7 +2751,7 @@ enum HandbookCategoryName {
 
     AudioTapes
 
-  AuxiliaryParts
+    AuxiliaryParts
 
     Backpacks
 
@@ -2827,7 +2827,7 @@ enum HandbookCategoryName {
 
     LaserAimingModules
 
-  Launchers
+    Launchers
 
     LightLaserDevices
 
@@ -2859,7 +2859,7 @@ enum HandbookCategoryName {
 
     Notes
 
-  Optics
+    Optics
 
     Others
 
@@ -2893,7 +2893,7 @@ enum HandbookCategoryName {
 
     SubmachineGuns
 
-  Suppressors
+    Suppressors
 
     TacticalComboDevices
 
@@ -2901,7 +2901,7 @@ enum HandbookCategoryName {
 
     TaskItems
 
-  Throwables
+    Throwables
 
     Tools
 
@@ -2915,7 +2915,7 @@ enum HandbookCategoryName {
 }
 
 enum LanguageCode {
-  cs
+    cs
 
     de
 

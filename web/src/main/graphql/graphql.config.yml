@@ -1,0 +1,2 @@
+schema: tarkovdev.graphqls
+documents: '**/*.graphql'

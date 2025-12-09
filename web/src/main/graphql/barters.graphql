@@ -1,0 +1,31 @@
+query BarterQuery {
+    barters(gameMode: pve) {
+        id
+        requiredItems {
+            count
+            attributes {
+                type
+                name
+                value
+            }
+            item {
+                id
+                name
+                shortName
+            }
+        }
+        rewardItems {
+            count
+            attributes {
+                type
+                name
+                value
+            }
+            item {
+                id
+                name
+                shortName
+            }
+        }
+    }
+}

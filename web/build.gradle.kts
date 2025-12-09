@@ -5,6 +5,7 @@ plugins {
     ru.alexredby.convention.`kotlin-jvm`
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kobby) // TODO: Check alternative - Apollo
+    id("com.apollographql.apollo") version "4.3.3"
 }
 
 dependencies {
@@ -32,6 +33,8 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     // Need to say a server in which format communicate in API
     implementation(libs.ktor.server.content.negotiation)
+
+    implementation("com.apollographql.apollo:apollo-runtime:4.3.3")
 
     runtimeOnly(libs.postgresql)
 }
@@ -64,6 +67,25 @@ kobby {
             // By default is name of GraphQL schema file
             // or `graphql` if there are multiple schema files
             name = "graphql"
+        }
+    }
+}
+
+apollo {
+    service("tarkovdev") {
+        packageName.set("ru.alexredby.stocktaking.tarkovdev.apollo")
+
+        // TODO: how to build all graphql types without making query
+        //  and do i need this?
+
+        // Adds the given directory as a GraphQL source root
+        srcDir("src/main/graphql")
+
+        // This creates a downloadTarkovdevApolloSchemaFromIntrospection task which downloads *.graphqls file schema
+        introspection {
+            endpointUrl.set("https://api.tarkov.dev/graphql")
+            // The path is interpreted relative to the current project
+            schemaFile.set(file("src/main/graphql/tarkovdev.graphqls"))
         }
     }
 }
