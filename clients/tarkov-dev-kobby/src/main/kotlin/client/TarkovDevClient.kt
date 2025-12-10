@@ -1,11 +1,29 @@
 package ru.alexredby.stocktaking.client
 
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import ru.alexredby.stocktaking.tarkovdev.GraphqlContext
+import ru.alexredby.stocktaking.tarkovdev.adapter.ktor.GraphqlSimpleKtorAdapter
 import ru.alexredby.stocktaking.tarkovdev.dto.GameMode
 import ru.alexredby.stocktaking.tarkovdev.entity.Barter
 import ru.alexredby.stocktaking.tarkovdev.entity.Craft
+import ru.alexredby.stocktaking.tarkovdev.graphqlContextOf
+import ru.alexredby.stocktaking.tarkovdev.graphqlJson
+
+val tarkovDevContextModule = module {
+    single {
+        val client = HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(graphqlJson)
+            }
+        }
+        graphqlContextOf(GraphqlSimpleKtorAdapter(client, "https://api.tarkov.dev/graphql"))
+    }
+}
 
 val tarkovDevClientModule = module {
     singleOf(::TarkovDevClient)
