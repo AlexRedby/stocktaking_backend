@@ -1,18 +1,11 @@
 package ru.alexredby.stocktaking.service
 
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
-import ru.alexredby.stocktaking.client.TarkovDevClient
+import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevClient
 import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.util.toCraftComponents
 import ru.alexredby.stocktaking.util.toGraphItem
 import ru.alexredby.stocktaking.util.toTools
-import kotlin.sequences.forEach
-
-val tarkovStorageModule = module {
-    singleOf(::TarkovStorage)
-}
 
 class TarkovStorage(
     private val tarkovDevClient: TarkovDevClient

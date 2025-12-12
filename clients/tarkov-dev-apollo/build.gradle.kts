@@ -24,7 +24,7 @@ apollo {
         packageName.set("ru.alexredby.stocktaking.client.tarkov.dev")
 
         // What codegen to use. One of "operationBased", "responseBased"
-        codegenModels.set("operationBased")
+        codegenModels.set("responseBased")
 
         // This creates a downloadTarkovdevApolloSchemaFromIntrospection task which downloads *.graphqls file schema
         introspection {

@@ -1,0 +1,14 @@
+fragment ContainedItem on ContainedItem {
+    item {
+        id
+        name
+        shortName
+    }
+    count
+    quantity
+    attributes {
+        type
+        name
+        value
+    }
+}

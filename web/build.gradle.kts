@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     implementation(projects.model)
-    implementation(projects.clients.tarkovDevKobby)
+    implementation(projects.clients.tarkovDevApollo)
 
     implementation(libs.jooq.kotlin)
 

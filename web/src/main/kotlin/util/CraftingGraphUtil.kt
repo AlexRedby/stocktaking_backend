@@ -1,10 +1,9 @@
 package ru.alexredby.stocktaking.util
 
+import ru.alexredby.stocktaking.client.tarkov.dev.fragment.ContainedItem
+import ru.alexredby.stocktaking.client.tarkov.dev.fragment.ContainedItem.Item
 import ru.alexredby.stocktaking.dto.CraftComponent
 import ru.alexredby.stocktaking.dto.GraphItem
-import ru.alexredby.stocktaking.tarkovdev.entity.ContainedItem
-import ru.alexredby.stocktaking.tarkovdev.entity.Item
-import kotlin.collections.asSequence
 
 fun List<ContainedItem?>.toCraftComponents(buffer: MutableMap<String, GraphItem>) = this.asSequence()
     .filterNotNull()

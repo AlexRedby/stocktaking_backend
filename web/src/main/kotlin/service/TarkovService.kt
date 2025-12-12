@@ -1,8 +1,6 @@
 package ru.alexredby.stocktaking.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
 import ru.alexredby.stocktaking.converter.toItemForComboBox
 import ru.alexredby.stocktaking.converter.toReactFlowEdges
 import ru.alexredby.stocktaking.converter.toReactFlowNodes
@@ -13,10 +11,6 @@ import ru.alexredby.stocktaking.dto.ReactFlowGraph
 import ru.alexredby.stocktaking.dto.ReactFlowNode
 
 val logger = KotlinLogging.logger { }
-
-val tarkovServiceModule = module {
-    singleOf(::TarkovService)
-}
 
 class TarkovService(
     private val tarkovStorage: TarkovStorage
