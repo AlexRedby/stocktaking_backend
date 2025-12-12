@@ -1,4 +1,4 @@
-group = "ru.alexredby.stocktaking"
+group = "ru.alexredby.stocktaking.client.tarkov.dev"
 version = "1.0-SNAPSHOT"
 
 plugins {
@@ -21,7 +21,7 @@ dependencies {
 
 apollo {
     service("tarkovdev") {
-        packageName.set("ru.alexredby.stocktaking.tarkovdev.apollo")
+        packageName.set("ru.alexredby.stocktaking.client.tarkov.dev")
 
         // What codegen to use. One of "operationBased", "responseBased"
         codegenModels.set("operationBased")

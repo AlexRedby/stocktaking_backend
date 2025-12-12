@@ -1,5 +1,5 @@
-query BarterQuery {
-    barters(gameMode: pve) {
+query fetchAllCraftsQuery {
+    crafts(gameMode: pve) {
         id
         requiredItems {
             count
