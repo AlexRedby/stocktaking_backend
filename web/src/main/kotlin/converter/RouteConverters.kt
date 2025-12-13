@@ -10,7 +10,12 @@ fun Iterable<GraphItem>.toReactFlowNodes() = this.asSequence()
     .map {
         ReactFlowNode(
             id = it.id,
-            data = ReactFlowNodeData(label = it.shortName),
+            data = ReactFlowNodeData(
+                label = it.shortName,
+                fullName = it.fullName,
+                shortName = it.shortName,
+                image = it.image,
+            ),
         )
     }.toSet()
 

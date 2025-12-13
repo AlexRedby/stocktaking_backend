@@ -4,6 +4,7 @@ data class GraphItem(
     val id: String,
     val fullName: String,
     val shortName: String,
+    val image: String,
 ) {
     val crafts: MutableSet<Craft> = mutableSetOf()
     val usedIn: MutableSet<Craft> = mutableSetOf()

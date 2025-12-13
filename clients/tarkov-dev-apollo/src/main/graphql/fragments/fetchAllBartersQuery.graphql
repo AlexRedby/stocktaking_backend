@@ -3,6 +3,7 @@ fragment ContainedItem on ContainedItem {
         id
         name
         shortName
+        iconLink
     }
     count
     quantity

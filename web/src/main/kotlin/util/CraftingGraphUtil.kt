@@ -27,6 +27,7 @@ fun Item.toGraphItem(buffer: MutableMap<String, GraphItem>) = buffer.getOrPut(id
         id = id,
         fullName = name!!,
         shortName = shortName!!,
+        image = iconLink!!,
     )
 }
 

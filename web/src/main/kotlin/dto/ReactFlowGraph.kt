@@ -17,6 +17,9 @@ data class ReactFlowNode(
 @Serializable
 data class ReactFlowNodeData(
     val label: String,
+    val fullName: String,
+    val shortName: String,
+    val image: String,
 )
 
 @Serializable
