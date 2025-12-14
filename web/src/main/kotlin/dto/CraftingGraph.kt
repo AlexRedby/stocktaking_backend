@@ -24,6 +24,7 @@ data class CraftComponent(
 )
 
 data class Station(
+    val id: String,
     val name: String,
     val level: Int,
     val image: String,

@@ -31,6 +31,7 @@ fun Iterable<GraphItem>.toReactFlowEdges() = this.asSequence()
                 ReactFlowEdge(
                     id = item.id + it.item.id,
                     source = item.id,
+                    sourceHandle = craft.station.id,
                     target = it.item.id,
                 )
             }
@@ -44,6 +45,7 @@ fun GraphItem.toItemForComboBox() = ItemForComboBox(
 )
 
 fun Station.toReactFlowStation() = ReactFlowStation(
+    id = id,
     name = name,
     level = level,
     image = image,

@@ -8,6 +8,7 @@ query fetchAllCraftsQuery {
             ...ContainedItem
         }
         station {
+            id
             name
             imageLink
         }

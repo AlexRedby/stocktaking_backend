@@ -25,6 +25,7 @@ data class ReactFlowNodeData(
 
 @Serializable
 class ReactFlowStation(
+    val id: String,
     val name: String,
     val level: Int,
     val image: String,
@@ -34,5 +35,6 @@ class ReactFlowStation(
 data class ReactFlowEdge(
     val id: String,
     val source: String,
+    val sourceHandle: String,
     val target: String,
 )
