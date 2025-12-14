@@ -7,5 +7,10 @@ query fetchAllBartersQuery {
         rewardItems {
             ...ContainedItem
         }
+        trader {
+            name
+            imageLink
+        }
+        level
     }
 }

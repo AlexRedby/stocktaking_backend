@@ -5,6 +5,7 @@ import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.util.toCraftComponents
 import ru.alexredby.stocktaking.util.toGraphItem
+import ru.alexredby.stocktaking.util.toStation
 import ru.alexredby.stocktaking.util.toTools
 
 class TarkovStorage(
@@ -24,6 +25,7 @@ class TarkovStorage(
             crafts.forEach { b ->
                 val components = b.requiredItems.toCraftComponents(this)
                 val tools = b.requiredItems.toTools(this)
+                val station = b.toStation()
 
                 b.rewardItems.filterNotNull()
                     .forEach {
@@ -33,6 +35,7 @@ class TarkovStorage(
                                 count = it.count,
                                 components = components,
                                 tools = tools,
+                                station = station
                             )
                             this.crafts.add(craft)
                             components.forEach { c -> c.item.usedIn.add(craft) }
@@ -41,6 +44,7 @@ class TarkovStorage(
             }
             barters.forEach { b ->
                 val components = b.requiredItems.toCraftComponents(this)
+                val station = b.toStation()
 
                 b.rewardItems.asSequence()
                     .filterNotNull()
@@ -51,6 +55,7 @@ class TarkovStorage(
                                 count = it.count,
                                 components = components,
                                 tools = emptySet(),
+                                station = station
                             )
                             this.crafts.add(craft)
                             components.forEach { c -> c.item.usedIn.add(craft) }

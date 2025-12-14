@@ -20,6 +20,14 @@ data class ReactFlowNodeData(
     val fullName: String,
     val shortName: String,
     val image: String,
+    val stations: List<ReactFlowStation>
+)
+
+@Serializable
+class ReactFlowStation(
+    val name: String,
+    val level: Int,
+    val image: String,
 )
 
 @Serializable

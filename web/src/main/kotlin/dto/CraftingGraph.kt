@@ -15,10 +15,17 @@ data class Craft(
     val count: Double,
     val components: Set<CraftComponent>,
     val tools: Set<GraphItem>,
+    val station: Station,
 )
 
 data class CraftComponent(
     val item: GraphItem,
     val count: Double,
+)
+
+data class Station(
+    val name: String,
+    val level: Int,
+    val image: String,
 )
 
