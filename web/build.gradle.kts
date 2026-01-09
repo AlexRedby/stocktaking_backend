@@ -17,7 +17,7 @@ dependencies {
     // Extension over serialization for ktor
     implementation(libs.ktor.serialization.kotlinx.json)
 
-    // DI in ktor 3.x
+    // DI in ktor
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)
 

@@ -31,5 +31,6 @@ tasks.test {
 }
 
 kotlin {
+    // FIXME: Need gradle 9.4.x to upgrade this to 25
     jvmToolchain(21)
 }

@@ -5,6 +5,12 @@
 
 # Development
 
+To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually:
+
+```sh
+./gradlew dependencyUpdates
+```
+
 To upgrade gradle wrapper version run:
 
 ```sh
