@@ -16,3 +16,9 @@ To upgrade gradle wrapper version run:
 ```sh
 ./gradlew wrapper --gradle-version latest 
 ```
+
+To run app in docker:
+
+```sh
+docker-compose up --build -d
+```

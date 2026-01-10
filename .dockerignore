@@ -1,0 +1,7 @@
+.idea
+.kotlin
+gradle/wrapper
+
+**/.gradle
+**/build
+**/Dockerfile

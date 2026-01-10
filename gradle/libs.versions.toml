@@ -19,6 +19,7 @@ dependency-update = "0.53.0"
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 dependency-update = { id = "com.github.ben-manes.versions", version.ref = "dependency-update" }
 kobby = { id = "io.github.ermadmi78.kobby", version.ref = "kobby" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [libraries]

@@ -4,6 +4,7 @@ version = "1.0-SNAPSHOT"
 plugins {
     ru.alexredby.convention.`kotlin-jvm`
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ktor)
 }
 
 dependencies {
@@ -29,4 +30,8 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
 
     runtimeOnly(libs.postgresql)
+}
+
+application {
+    mainClass.set("ru.alexredby.stocktaking.ApplicationKt")
 }
