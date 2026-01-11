@@ -4,3 +4,10 @@ ktor:
   application:
     modules:
       - ru.alexredby.stocktaking.ApplicationKt.module
+
+database:
+  host: localhost
+  port: 5432
+  name: stocktaking
+  user: stocktaking
+  password: ${DB_PASSWORD}

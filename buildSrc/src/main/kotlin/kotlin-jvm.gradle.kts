@@ -23,6 +23,15 @@ dependencies {
         because("Project choice for slf4j logging provider")
     }
 
+    // TODO: Do i need it if i have ktor configuration?
+    //  Just need find out how to make it type-safe like here - https://github.com/perracodex/ktor-config (not on maven)
+    implementation(libs.hoplite.core) {
+        because("Core library to load configuration properties")
+    }
+    implementation(libs.hoplite.yaml) {
+        because("Extension library for YAML configuration file support")
+    }
+
     testImplementation(kotlin("test"))
 }
 

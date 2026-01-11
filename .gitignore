@@ -40,3 +40,6 @@ bin/
 
 ### Kotlin Gradle plugin ###
 .kotlin
+
+### Environment secrets ###
+**/.env
