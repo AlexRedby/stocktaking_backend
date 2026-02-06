@@ -10,12 +10,12 @@ dependencies {
 
     implementation(libs.jooq.codegen)
     implementation(libs.jooq.meta)
-    implementation(libs.jooq.meta.extension.liquibase)
 
     implementation(libs.liquibase)
     implementation(libs.liquibase.slf4j)
 
-    runtimeOnly(libs.postgresql)
+    implementation(libs.testcontainers.postregesql)
+    implementation(libs.postgresql)
 }
 
 kotlin {

@@ -15,6 +15,7 @@ kobby = "5.3.0"
 apollo = "4.3.3"
 dependency-update = "0.53.0"
 hoplite = "2.9.0"
+testcontainers = "2.0.3"
 
 [plugins]
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
@@ -34,13 +35,15 @@ postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "pos
 hoplite-core = { group = "com.sksamuel.hoplite", name = "hoplite-core", version.ref = "hoplite" }
 hoplite-yaml = { group = "com.sksamuel.hoplite", name = "hoplite-yaml", version.ref = "hoplite" }
 
+jooq = { group = "org.jooq", name = "jooq", version.ref = "jooq" }
 jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
 jooq-meta = { group = "org.jooq", name = "jooq-meta", version.ref = "jooq" }
-jooq-meta-extension-liquibase = { group = "org.jooq", name = "jooq-meta-extensions-liquibase", version.ref = "jooq" }
 jooq-kotlin = { group = "org.jooq", name = "jooq-kotlin", version.ref = "jooq" }
 
 liquibase = { group = "org.liquibase", name = "liquibase-core", version.ref = "liquibase" }
 liquibase-slf4j = { group = "com.mattbertolini", name = "liquibase-slf4j", version.ref = "liquibase-slf4j" }
+
+testcontainers-postregesql = { group = "org.testcontainers", name = "testcontainers-postgresql", version.ref = "testcontainers" }
 
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }

@@ -1,0 +1,3 @@
+[*.kt]
+# Disable formating for all kotlin files in current folder since they are generated
+ij_formatter_enabled = false

@@ -10,6 +10,6 @@ import ru.alexredby.stocktaking.model.tables.Item
 
 
 /**
- * The table <code>ITEM</code>.
+ * The table <code>stocktaking.item</code>.
  */
 val ITEM: Item = Item.ITEM

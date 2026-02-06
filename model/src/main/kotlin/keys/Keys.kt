@@ -18,4 +18,4 @@ import ru.alexredby.stocktaking.model.tables.records.ItemRecord
 // UNIQUE and PRIMARY KEY definitions
 // -------------------------------------------------------------------------
 
-val CONSTRAINT_2: UniqueKey<ItemRecord> = Internal.createUniqueKey(Item.ITEM, DSL.name("CONSTRAINT_2"), arrayOf(Item.ITEM.ID), true)
+val ITEM_PKEY: UniqueKey<ItemRecord> = Internal.createUniqueKey(Item.ITEM, DSL.name("item_pkey"), arrayOf(Item.ITEM.ID), true)
