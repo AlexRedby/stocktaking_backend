@@ -1,63 +1,54 @@
 [versions]
-kotlin = "2.3.0"
-kotlin-logging = "7.0.14"
-kotlinx-serialization = "1.9.0"
-ktor = "3.3.3"
-koin = "4.1.1"
-slf4j = "2.0.17"
-logback = "1.5.24"
+apollo = "4.4.1"
+dependency-update = "0.53.0"
+hikari-cp = "7.0.2"
+hoplite = "2.9.0"
 javassist = "3.30.2-GA"
-jooq = "3.20.10"
+jooq = "3.20.11"
+kobby = "5.3.1"
+koin = "4.1.1"
+kotlin = "2.3.10"
+kotlin-logging = "7.0.14"
+kotlinx-serialization = "1.10.0"
+ktor = "3.4.0"
 liquibase = "5.0.1"
 liquibase-slf4j = "5.1.0"
-postgresql = "42.7.8"
-kobby = "5.3.0"
-apollo = "4.3.3"
-dependency-update = "0.53.0"
-hoplite = "2.9.0"
+logback = "1.5.28"
+postgresql = "42.7.9"
+slf4j = "2.0.17"
 testcontainers = "2.0.3"
-hikari-cp = "7.0.2"
 
 [plugins]
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 dependency-update = { id = "com.github.ben-manes.versions", version.ref = "dependency-update" }
 kobby = { id = "io.github.ermadmi78.kobby", version.ref = "kobby" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 [libraries]
+apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
+hikari-cp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari-cp" }
+hoplite-core = { group = "com.sksamuel.hoplite", name = "hoplite-core", version.ref = "hoplite" }
+hoplite-yaml = { group = "com.sksamuel.hoplite", name = "hoplite-yaml", version.ref = "hoplite" }
+javassist = { group = "org.javassist", name = "javassist", version.ref = "javassist" }
+jooq = { group = "org.jooq", name = "jooq", version.ref = "jooq" }
+jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
+jooq-kotlin = { group = "org.jooq", name = "jooq-kotlin", version.ref = "jooq" }
+jooq-meta = { group = "org.jooq", name = "jooq-meta", version.ref = "jooq" }
+koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
+koin-logger-slf4j = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "kotlin-logging" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
-javassist = { group = "org.javassist", name = "javassist", version.ref = "javassist" }
-hoplite-core = { group = "com.sksamuel.hoplite", name = "hoplite-core", version.ref = "hoplite" }
-hoplite-yaml = { group = "com.sksamuel.hoplite", name = "hoplite-yaml", version.ref = "hoplite" }
-
-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
-hikari-cp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari-cp" }
-
-jooq = { group = "org.jooq", name = "jooq", version.ref = "jooq" }
-jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
-jooq-meta = { group = "org.jooq", name = "jooq-meta", version.ref = "jooq" }
-jooq-kotlin = { group = "org.jooq", name = "jooq-kotlin", version.ref = "jooq" }
-
-liquibase = { group = "org.liquibase", name = "liquibase-core", version.ref = "liquibase" }
-liquibase-slf4j = { group = "com.mattbertolini", name = "liquibase-slf4j", version.ref = "liquibase-slf4j" }
-
-testcontainers-postregesql = { group = "org.testcontainers", name = "testcontainers-postgresql", version.ref = "testcontainers" }
-
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
-
-ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
-
-ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-
-koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
-koin-logger-slf4j = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
-
-apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+liquibase = { group = "org.liquibase", name = "liquibase-core", version.ref = "liquibase" }
+liquibase-slf4j = { group = "com.mattbertolini", name = "liquibase-slf4j", version.ref = "liquibase-slf4j" }
+logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+testcontainers-postregesql = { group = "org.testcontainers", name = "testcontainers-postgresql", version.ref = "testcontainers" }

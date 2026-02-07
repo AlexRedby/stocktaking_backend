@@ -35,14 +35,28 @@ docker-compose up --build -d
 
 # Development
 
-To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually:
+To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually
 
+Linux/Mac:
 ```sh
 ./gradlew dependencyUpdates
 ```
 
-To upgrade gradle wrapper version run:
+Windows:
 
+```bat
+gradlew.bat dependencyUpdates
+```
+
+To upgrade gradle wrapper version run
+
+Linux/Mac:
 ```sh
-./gradlew wrapper --gradle-version latest 
+./gradlew wrapper --gradle-version latest
+```
+
+Windows:
+
+```bat
+gradlew.bat wrapper --gradle-version latest
 ```
