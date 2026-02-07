@@ -86,6 +86,11 @@ open class Item(
     val SHORT_NAME: TableField<ItemRecord, String?> = createField(DSL.name("short_name"), SQLDataType.CLOB, this, "")
 
     /**
+     * The column <code>stocktaking.item.image_link</code>.
+     */
+    val IMAGE_LINK: TableField<ItemRecord, String?> = createField(DSL.name("image_link"), SQLDataType.CLOB, this, "")
+
+    /**
      * The column <code>stocktaking.item.base_price</code>.
      */
     val BASE_PRICE: TableField<ItemRecord, Int?> = createField(DSL.name("base_price"), SQLDataType.INTEGER, this, "")

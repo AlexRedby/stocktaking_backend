@@ -30,17 +30,21 @@ open class ItemRecord() : UpdatableRecordImpl<ItemRecord>(Item.ITEM) {
         set(value): Unit = set(2, value)
         get(): String? = get(2) as String?
 
-    open var basePrice: Int?
+    open var imageLink: String?
         set(value): Unit = set(3, value)
-        get(): Int? = get(3) as Int?
+        get(): String? = get(3) as String?
+
+    open var basePrice: Int?
+        set(value): Unit = set(4, value)
+        get(): Int? = get(4) as Int?
 
     open var wikiLink: String?
-        set(value): Unit = set(4, value)
-        get(): String? = get(4) as String?
+        set(value): Unit = set(5, value)
+        get(): String? = get(5) as String?
 
     open var updated: LocalDateTime?
-        set(value): Unit = set(5, value)
-        get(): LocalDateTime? = get(5) as LocalDateTime?
+        set(value): Unit = set(6, value)
+        get(): LocalDateTime? = get(6) as LocalDateTime?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -51,10 +55,11 @@ open class ItemRecord() : UpdatableRecordImpl<ItemRecord>(Item.ITEM) {
     /**
      * Create a detached, initialised ItemRecord
      */
-    constructor(id: Int? = null, name: String? = null, shortName: String? = null, basePrice: Int? = null, wikiLink: String? = null, updated: LocalDateTime? = null): this() {
+    constructor(id: Int? = null, name: String? = null, shortName: String? = null, imageLink: String? = null, basePrice: Int? = null, wikiLink: String? = null, updated: LocalDateTime? = null): this() {
         this.id = id
         this.name = name
         this.shortName = shortName
+        this.imageLink = imageLink
         this.basePrice = basePrice
         this.wikiLink = wikiLink
         this.updated = updated

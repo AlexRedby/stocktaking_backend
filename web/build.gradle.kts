@@ -29,7 +29,18 @@ dependencies {
     // Need to say a server in which format communicate in API
     implementation(libs.ktor.server.content.negotiation)
 
-    runtimeOnly(libs.postgresql)
+    implementation(libs.postgresql) {
+        because("Driver for postgresql connection")
+    }
+    implementation(libs.hikari.cp) {
+        because("Need connection pool for DB")
+    }
+    implementation(libs.jooq) {
+        because("Need for DB requests")
+    }
+    implementation(libs.jooq.kotlin) {
+        because("Need to get kotlin native feel when working with jOOQ")
+    }
 }
 
 application {

@@ -16,6 +16,7 @@ apollo = "4.3.3"
 dependency-update = "0.53.0"
 hoplite = "2.9.0"
 testcontainers = "2.0.3"
+hikari-cp = "7.0.2"
 
 [plugins]
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
@@ -31,9 +32,11 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 javassist = { group = "org.javassist", name = "javassist", version.ref = "javassist" }
-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 hoplite-core = { group = "com.sksamuel.hoplite", name = "hoplite-core", version.ref = "hoplite" }
 hoplite-yaml = { group = "com.sksamuel.hoplite", name = "hoplite-yaml", version.ref = "hoplite" }
+
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+hikari-cp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari-cp" }
 
 jooq = { group = "org.jooq", name = "jooq", version.ref = "jooq" }
 jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
