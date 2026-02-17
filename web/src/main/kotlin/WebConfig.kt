@@ -1,18 +1,27 @@
 package ru.alexredby.stocktaking
 
 import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.ExperimentalHoplite
 import com.sksamuel.hoplite.addResourceSource
 
-// TODO: reuse ktor configs
-fun readConfig(): WebConfig = ConfigLoaderBuilder.default()
-    // TODO: use hocon instead of yaml
-    .addResourceSource("/application.yaml")
-    .strict()
-    .build()
-    .loadConfigOrThrow<WebConfig>()
+@OptIn(ExperimentalHoplite::class)
+fun createAppConfig(): AppConfig {
+    return ConfigLoaderBuilder.default()
+        .addResourceSource("/application.conf")
+        .withExplicitSealedTypes()
+        .strict()
+        .build()
+        .loadConfigOrThrow<AppConfig>()
+}
 
-data class WebConfig(
+data class AppConfig(
+    val server: ServerConfig,
     val database: DatabaseConfig
+)
+
+data class ServerConfig(
+    val port: Int,
+    val development: Boolean,
 )
 
 data class DatabaseConfig(
@@ -21,4 +30,14 @@ data class DatabaseConfig(
     val name: String,
     val user: String,
     val password: String,
+
+    val cp: ConnectionPoolConfig,
+)
+
+data class ConnectionPoolConfig(
+    val maximumPoolSize: Int,
+    val minimumIdle: Int,
+    val connectionTimeout: Long,
+    val idleTimeout: Long,
+    val maxLifetime: Long,
 )

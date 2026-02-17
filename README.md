@@ -16,26 +16,35 @@ There is several ways how to store this environment variables.
 
 ## .env file
 
-Create `.env` file in root of repository. Fill it with needed values just like that, where each variable on a new line:
-
-```
-DB_PASSWORD=password
-```
-
+Copy `.env.example` to `.env` file in root of repository. Fill it with needed values, where each variable on a new line.
 With docker this will work without additional steps,
-but for local launch need to add `.env` file in configuration of the IDEA.
+but for local launch need to add `.env` file in configuration of the IDE or run Gradle task `:web:runWithDotEnv`.
 
 # Run app
 
-To run app in docker:
+## Docker
 
 ```sh
 docker-compose up --build -d
 ```
 
+## Local
+
+Linux/Mac:
+
+```sh
+./gradlew :web:runWithDotEnv
+```
+
+Windows:
+
+```bash
+gradlew.bat :web:runWithDotEnv
+```
+
 # Development
 
-To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually
+To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually...
 
 Linux/Mac:
 ```sh
@@ -44,11 +53,11 @@ Linux/Mac:
 
 Windows:
 
-```bat
+```bash
 gradlew.bat dependencyUpdates
 ```
 
-To upgrade gradle wrapper version run
+To upgrade gradle wrapper version run...
 
 Linux/Mac:
 ```sh
@@ -57,6 +66,6 @@ Linux/Mac:
 
 Windows:
 
-```bat
+```bash
 gradlew.bat wrapper --gradle-version latest
 ```

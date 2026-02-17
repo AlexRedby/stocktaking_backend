@@ -8,12 +8,12 @@ import org.koin.logger.slf4jLogger
 import ru.alexredby.stocktaking.client.tarkov.dev.di.tarkovDevClientModule
 import ru.alexredby.stocktaking.di.appModule
 
-fun Application.configureKoin() {
+fun Application.configureKoin(appConfig: AppConfig) {
     install(Koin) {
         slf4jLogger()
         modules(
             module {
-                single { environment.config }
+                single { appConfig }
             },
             appModule,
             tarkovDevClientModule,

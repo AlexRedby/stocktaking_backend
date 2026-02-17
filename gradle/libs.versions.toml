@@ -1,5 +1,6 @@
 [versions]
 apollo = "4.4.1"
+dotenv = "1.1.3"
 dependency-update = "0.53.0"
 hikari-cp = "7.0.2"
 hoplite = "2.9.0"
@@ -20,6 +21,7 @@ testcontainers = "2.0.3"
 
 [plugins]
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
+dotenv = { id = "io.github.klahap.dotenv", version.ref = "dotenv" }
 dependency-update = { id = "com.github.ben-manes.versions", version.ref = "dependency-update" }
 kobby = { id = "io.github.ermadmi78.kobby", version.ref = "kobby" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -29,7 +31,7 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
 hikari-cp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari-cp" }
 hoplite-core = { group = "com.sksamuel.hoplite", name = "hoplite-core", version.ref = "hoplite" }
-hoplite-yaml = { group = "com.sksamuel.hoplite", name = "hoplite-yaml", version.ref = "hoplite" }
+hoplite-hocon = { group = "com.sksamuel.hoplite", name = "hoplite-hocon", version.ref = "hoplite" }
 javassist = { group = "org.javassist", name = "javassist", version.ref = "javassist" }
 jooq = { group = "org.jooq", name = "jooq", version.ref = "jooq" }
 jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
@@ -43,7 +45,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor" }
+ktor-server-compression = { group = "io.ktor", name = "ktor-server-compression", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 liquibase = { group = "org.liquibase", name = "liquibase-core", version.ref = "liquibase" }

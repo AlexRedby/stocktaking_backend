@@ -1,8 +1,11 @@
+import io.github.klahap.dotenv.DotEnvBuilder
+
 group = "ru.alexredby.stocktaking"
 version = "1.0-SNAPSHOT"
 
 plugins {
     ru.alexredby.convention.`kotlin-jvm`
+    alias(libs.plugins.dotenv)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ktor)
 }
@@ -22,12 +25,15 @@ dependencies {
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)
 
-    // Need for the embedded server (EngineMain)
-    implementation(libs.ktor.server.netty)
-    // Need to read application.yaml
-    implementation(libs.ktor.server.config.yaml)
-    // Need to say a server in which format communicate in API
-    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.server.netty) {
+        because("Need for the embedded server")
+    }
+    implementation(libs.ktor.server.compression) {
+        because("Need for HTTP package compression")
+    }
+    implementation(libs.ktor.server.content.negotiation) {
+        because("Need to say a server in which format communicate in API")
+    }
 
     implementation(libs.postgresql) {
         because("Driver for postgresql connection")
@@ -45,4 +51,21 @@ dependencies {
 
 application {
     mainClass.set("ru.alexredby.stocktaking.ApplicationKt")
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Tasks
+////////////////////////////////////////////////////////////////////////////////
+
+tasks.register<JavaExec>("runWithDotEnv") {
+    group = "application"
+    description = "Runs application with .env"
+
+    mainClass.set(application.mainClass)
+    classpath = sourceSets["main"].runtimeClasspath
+
+    val dotenv = DotEnvBuilder.dotEnv {
+        addFileIfExists("$rootDir/.env")
+    }
+    environment(dotenv)
 }
