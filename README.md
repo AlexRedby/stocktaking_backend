@@ -1,7 +1,8 @@
 # TODO
 
-- Test if apollo better to use compare to kobby
-- Add documentation how to run schema download and code generation
+- [x] Remove the unused Kobby client module, plugin, schema copy, and Docker build
+  scaffolding; Apollo is the only client used by `web`.
+- [ ] Add documentation how to run schema download and code generation
 
 # Secrets
 

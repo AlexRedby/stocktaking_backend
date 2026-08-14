@@ -7,7 +7,6 @@ ENV GRADLE_USER_HOME=/gradle_cache
 
 # Create empty directories for each modules of root gradle file
 RUN mkdir -p clients/tarkov-dev-apollo \
-    clients/tarkov-dev-kobby \
     db-migration \
     model
 

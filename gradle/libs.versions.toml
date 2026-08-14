@@ -6,7 +6,6 @@ hikari-cp = "7.0.2"
 hoplite = "2.9.0"
 javassist = "3.30.2-GA"
 jooq = "3.20.11"
-kobby = "5.3.1"
 koin = "4.1.1"
 kotlin = "2.3.10"
 kotlin-logging = "8.0.01"
@@ -23,7 +22,6 @@ testcontainers = "2.0.3"
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 dotenv = { id = "io.github.klahap.dotenv", version.ref = "dotenv" }
 dependency-update = { id = "com.github.ben-manes.versions", version.ref = "dependency-update" }
-kobby = { id = "io.github.ermadmi78.kobby", version.ref = "kobby" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
