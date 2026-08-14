@@ -1,9 +1,3 @@
-# TODO
-
-- [x] Remove the unused Kobby client module, plugin, schema copy, and Docker build
-  scaffolding; Apollo is the only client used by `web`.
-- [ ] Add documentation how to run schema download and code generation
-
 # Secrets
 
 Secrets are not stored in git and should be manually added to environment variables before app launch.
@@ -44,6 +38,27 @@ gradlew.bat :web:runWithDotEnv
 ```
 
 # Development
+
+## Tarkov.dev Apollo schema and generated sources
+
+The checked-in schema is
+`clients/tarkov-dev-apollo/src/main/graphql/tarkov-dev.graphqls`. Refresh it
+from the configured Tarkov.dev introspection endpoint before reviewing an API
+contract change:
+
+```sh
+./gradlew :clients:tarkov-dev-apollo:downloadTarkovdevApolloSchemaFromIntrospection
+```
+
+Generate the Kotlin operation models after changing the schema or GraphQL
+operations:
+
+```sh
+./gradlew :clients:tarkov-dev-apollo:generateTarkovdevApolloSources
+```
+
+On Windows use `gradlew.bat` with the same task names. Generated Kotlin sources
+live under the module's `build/` directory and must not be edited or committed.
 
 To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually...
 
