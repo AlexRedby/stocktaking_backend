@@ -2,9 +2,8 @@
 
 Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is cleanup or optimization.
 
-## P1 - API correctness and production diagnostics
+## P1 - API correctness
 
-- Keep `/api/test/*` available in production as supported diagnostic endpoints and define their stable request, response, error, and access contracts. Make the insert operation safe for production use: prefer POST for state changes, validate its input, avoid random primary-key collisions, and return a structured result; if GET compatibility must remain, make its behavior explicitly safe and documented. Ensure read failures return a defined error instead of ending after `printStackTrace`. Done when production route tests cover both endpoints, success and failure responses, and the intended mutation semantics.
 - Define and enforce request/error contracts for `/api/crafting-tree` and `/api/craftable-items`. Make `target_item_id` required, return 400 for missing or malformed input and 404 for an unknown item, and map failures to a stable JSON error payload instead of `!!`/uncaught exceptions. Escape search text with `Regex.escape` or replace the regex implementation so characters such as `[`, `(`, `*`, quotes, and Unicode cannot produce a 500. Done when route tests cover success, missing ID, unknown ID, empty filter, punctuation, and Unicode.
 - Preserve recipe identity and quantities in the graph contract. Edge IDs must be unique across alternative crafts/stations, and the DTO must carry recipe ID, output count, required item count, and explicit grouping of alternative recipes. Deduplicate station/handle entries by stable identity. Done when a fixture with two recipes sharing the same source and component round-trips without duplicate React Flow IDs or lost quantities.
 - Decide the exact semantics of `/api/craftable-items`: either return only items with at least one craft or rename/document the endpoint as an all-item search. Done when fixtures containing leaf components and tools prove the selected behavior.
@@ -20,7 +19,7 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 ## P2 - Tests and contract gates
 
 - Add unit tests for phrase search, graph traversal with cycles/diamonds, loop removal, duplicate recipes, recipe quantities, station handles, and craftable-item filtering.
-- Add Ktor route tests for all success/error responses and verify the supported production contract of the diagnostic routes.
+- Add Ktor route tests for all supported API success and error responses.
 - Add mocked Apollo client tests and a PostgreSQL/Testcontainers migration test.
 - Add a cross-repository smoke test for autocomplete and crafting-tree rendering through the supported production proxy/origin topology. Done when the backend test/check task and the shared smoke test run in CI from a clean checkout.
 
@@ -32,5 +31,5 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P3 - Maintainability and documentation
 
-- Remove dead code such as the unused `filterTree` path and replace `printStackTrace` with structured exception handling and logging.
+- Remove dead code such as the unused `filterTree` path.
 - Update `README.md` and `db-migration/README.md` with the architecture, complete environment-variable list, migration workflow, production startup, API/error contract, health checks, and verification commands. Done when a new checkout can be launched and verified by following only the documentation.
