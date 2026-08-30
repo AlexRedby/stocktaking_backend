@@ -4,10 +4,11 @@ import ru.alexredby.db.migration.liquibase.applyLiquibaseMigration
 import java.sql.DriverManager
 
 fun main() {
-    // TODO: move strings to properties
+    val database = createMigrationConfig().database
+
     DriverManager.getConnection(
-        "jdbc:postgresql://localhost:5432/stocktaking",
-        "stocktaking",
-        "QLGcuAAxT2zg",
+        "jdbc:postgresql://${database.host}:${database.port}/${database.name}",
+        database.user,
+        database.password,
     ).use { applyLiquibaseMigration(it) }
 }

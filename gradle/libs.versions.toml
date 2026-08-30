@@ -20,13 +20,13 @@ testcontainers = "2.0.3"
 
 [plugins]
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
-dotenv = { id = "io.github.klahap.dotenv", version.ref = "dotenv" }
 dependency-update = { id = "com.github.ben-manes.versions", version.ref = "dependency-update" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 [libraries]
 apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
+dotenv = { group = "io.github.klahap.dotenv", name = "dotenv", version.ref = "dotenv" }
 hikari-cp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari-cp" }
 hoplite-core = { group = "com.sksamuel.hoplite", name = "hoplite-core", version.ref = "hoplite" }
 hoplite-hocon = { group = "com.sksamuel.hoplite", name = "hoplite-hocon", version.ref = "hoplite" }

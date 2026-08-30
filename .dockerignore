@@ -1,5 +1,9 @@
 .idea
 .kotlin
+.git
+.env
+.env.*
+!.env.example
 gradle/wrapper
 
 **/.gradle

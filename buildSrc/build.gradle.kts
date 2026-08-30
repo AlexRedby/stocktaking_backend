@@ -6,10 +6,12 @@ plugins {
 }
 
 repositories {
+    gradlePluginPortal()
     mavenCentral()
 }
 
 dependencies {
+    implementation(libs.dotenv)
     implementation(libs.kotlin.gradle.plugin)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

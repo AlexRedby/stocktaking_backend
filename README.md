@@ -1,19 +1,17 @@
-# Secrets
+# Configuration
 
-Secrets are not stored in git and should be manually added to environment variables before app launch.
-The list is next:
-
-| Name        | Description          |
-|-------------|----------------------|
-| DB_PASSWORD | Password of database |
-
-There is several ways how to store this environment variables.
+Local database settings are read from the ignored root `.env` file by the
+documented Gradle run tasks. Web startup and migrations use the same typed
+database configuration contract. See
+[docs/configuration.md](docs/configuration.md) for the supported variables,
+defaults, precedence, and failure behavior.
 
 ## .env file
 
-Copy `.env.example` to `.env` file in root of repository. Fill it with needed values, where each variable on a new line.
-With docker this will work without additional steps,
-but for local launch need to add `.env` file in configuration of the IDE or run Gradle task `:web:runWithDotEnv`.
+Copy `.env.example` to `.env` in the repository root and replace the password
+placeholder. Docker Compose reads the same file automatically. For local Gradle
+launches, use `:web:runWithDotEnv`; direct IDE launches must provide the same
+variables in the run configuration.
 
 # Run app
 
@@ -36,6 +34,11 @@ Windows:
 ```bash
 gradlew.bat :web:runWithDotEnv
 ```
+
+## Database migrations
+
+See the [db-migration README](db-migration/README.md) for the module description
+and run commands.
 
 # Development
 

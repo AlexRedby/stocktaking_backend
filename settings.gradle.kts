@@ -6,6 +6,7 @@ plugins {
 
 include(
     "clients:tarkov-dev-apollo",
+    "configuration",
     "db-migration",
     "model",
     "web"

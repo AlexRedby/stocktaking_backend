@@ -7,6 +7,7 @@ ENV GRADLE_USER_HOME=/gradle_cache
 
 # Create empty directories for each modules of root gradle file
 RUN mkdir -p clients/tarkov-dev-apollo \
+    configuration \
     db-migration \
     model
 
@@ -17,6 +18,7 @@ COPY buildSrc ./buildSrc
 # Modules used by web
 COPY clients/tarkov-dev-apollo/*.gradle.kts ./clients/tarkov-dev-apollo/
 COPY clients/tarkov-dev-apollo/src/main/graphql ./clients/tarkov-dev-apollo/src/main/graphql
+COPY configuration/*.gradle.kts ./configuration/
 COPY model/*.gradle.kts ./model/
 
 COPY web/*.gradle.kts ./web/

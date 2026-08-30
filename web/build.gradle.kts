@@ -1,16 +1,16 @@
-import io.github.klahap.dotenv.DotEnvBuilder
+import ru.alexredby.convention.registerRunWithDotEnv
 
 group = "ru.alexredby.stocktaking"
 version = "1.0-SNAPSHOT"
 
 plugins {
     ru.alexredby.convention.`kotlin-jvm`
-    alias(libs.plugins.dotenv)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ktor)
 }
 
 dependencies {
+    implementation(projects.configuration)
     implementation(projects.model)
     implementation(projects.clients.tarkovDevApollo)
 
@@ -57,15 +57,4 @@ application {
 // Tasks
 ////////////////////////////////////////////////////////////////////////////////
 
-tasks.register<JavaExec>("runWithDotEnv") {
-    group = "application"
-    description = "Runs application with .env"
-
-    mainClass.set(application.mainClass)
-    classpath = sourceSets["main"].runtimeClasspath
-
-    val dotenv = DotEnvBuilder.dotEnv {
-        addFileIfExists("$rootDir/.env")
-    }
-    environment(dotenv)
-}
+registerRunWithDotEnv(application.mainClass)

@@ -1,3 +1,5 @@
+import ru.alexredby.convention.registerRunWithDotEnv
+
 group = "ru.alexredby.db.migration"
 version = "1.0-SNAPSHOT"
 
@@ -6,6 +8,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.configuration)
+
     implementation(libs.javassist)
 
     implementation(libs.jooq.codegen)
@@ -23,3 +27,5 @@ kotlin {
         freeCompilerArgs.add("-Xwhen-guards")
     }
 }
+
+registerRunWithDotEnv("ru.alexredby.db.migration.LiquibaseMigrationMainKt")
