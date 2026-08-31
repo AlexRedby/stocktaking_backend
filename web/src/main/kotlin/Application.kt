@@ -10,6 +10,7 @@ import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.gzip
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.IgnoreTrailingSlash
+import ru.alexredby.stocktaking.route.configureErrorHandling
 import ru.alexredby.stocktaking.route.configureRouting
 
 fun main() {
@@ -37,6 +38,7 @@ fun createKtorServer(appConfig: AppConfig): EmbeddedServer<NettyApplicationEngin
         install(ContentNegotiation) { json() }
 
         configureKoin(appConfig)
+        configureErrorHandling()
         configureRouting()
     }
 }

@@ -1,4 +1,4 @@
-package ru.alexredby.stocktaking.configuration
+package ru.alexredby.stocktaking.client.tarkov.dev
 
 data class TarkovDevConfig(
     val endpoint: String = "https://api.tarkov.dev/graphql",

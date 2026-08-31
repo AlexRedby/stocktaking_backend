@@ -14,10 +14,9 @@ fun Application.configureKoin(appConfig: AppConfig) {
         modules(
             module {
                 single { appConfig }
-                single { appConfig.tarkovDev }
             },
             appModule,
-            tarkovDevClientModule,
+            tarkovDevClientModule(appConfig.tarkovDev),
         )
     }
 }

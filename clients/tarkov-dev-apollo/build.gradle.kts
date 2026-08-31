@@ -7,8 +7,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.configuration)
-
     // Add this dependency to enable Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
     // Extension over serialization for ktor

@@ -178,6 +178,7 @@ class TarkovRoutesTest {
 
         application {
             install(ServerContentNegotiation) { json() }
+            configureErrorHandling()
             routing {
                 installTarkovApiRoutes(TarkovService(storage))
             }

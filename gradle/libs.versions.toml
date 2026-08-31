@@ -1,5 +1,5 @@
 [versions]
-apollo = "4.4.1"
+apollo = "5.1.0"
 dotenv = "1.1.3"
 dependency-update = "0.53.0"
 hikari-cp = "7.0.2"
@@ -47,6 +47,7 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 ktor-server-compression = { group = "io.ktor", name = "ktor-server-compression", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages", version.ref = "ktor" }
 ktor-server-test-host = { group = "io.ktor", name = "ktor-server-test-host", version.ref = "ktor" }
 liquibase = { group = "org.liquibase", name = "liquibase-core", version.ref = "liquibase" }
 liquibase-slf4j = { group = "com.mattbertolini", name = "liquibase-slf4j", version.ref = "liquibase-slf4j" }

@@ -34,6 +34,9 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation) {
         because("Need to say a server in which format communicate in API")
     }
+    implementation(libs.ktor.server.status.pages) {
+        because("Maps application failures to HTTP responses")
+    }
 
     implementation(libs.postgresql) {
         because("Driver for postgresql connection")

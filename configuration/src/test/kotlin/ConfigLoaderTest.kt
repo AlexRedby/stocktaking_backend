@@ -10,10 +10,6 @@ class ConfigLoaderTest {
         val database: DatabaseConfig,
     )
 
-    data class TarkovTestConfig(
-        val tarkovDev: TarkovDevConfig,
-    )
-
     @Test
     fun `loads shared database config with application overrides`() {
         val database = loadConfig<TestConfig>("/valid-config.conf").database
@@ -38,15 +34,5 @@ class ConfigLoaderTest {
         assertFailsWith<ConfigException> {
             loadConfig<TestConfig>("/invalid-port-config.conf")
         }
-    }
-
-    @Test
-    fun `loads Tarkov dev client configuration`() {
-        val tarkovDev = loadConfig<TarkovTestConfig>("/valid-tarkov-dev-config.conf").tarkovDev
-
-        assertEquals("https://example.com/graphql", tarkovDev.endpoint)
-        assertEquals(1_000, tarkovDev.connectTimeoutMillis)
-        assertEquals(2_000, tarkovDev.readTimeoutMillis)
-        assertEquals(3, tarkovDev.retryCount)
     }
 }
