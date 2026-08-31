@@ -5,6 +5,7 @@ import ru.alexredby.stocktaking.dto.ItemForComboBox
 import ru.alexredby.stocktaking.dto.ReactFlowEdge
 import ru.alexredby.stocktaking.dto.ReactFlowNode
 import ru.alexredby.stocktaking.dto.ReactFlowNodeData
+import ru.alexredby.stocktaking.dto.ReactFlowRecipe
 import ru.alexredby.stocktaking.dto.ReactFlowStation
 import ru.alexredby.stocktaking.dto.Station
 
@@ -17,8 +18,12 @@ fun Iterable<GraphItem>.toReactFlowNodes() = this.asSequence()
                 fullName = item.fullName,
                 shortName = item.shortName,
                 image = item.image,
-                stations = item.crafts.map {
-                    it.station.toReactFlowStation()
+                recipes = item.crafts.map { craft ->
+                    ReactFlowRecipe(
+                        id = craft.id,
+                        outputCount = craft.count,
+                        station = craft.station.toReactFlowStation(),
+                    )
                 },
             ),
         )
@@ -29,10 +34,11 @@ fun Iterable<GraphItem>.toReactFlowEdges() = this.asSequence()
         item.crafts.flatMap { craft ->
             craft.components.map {
                 ReactFlowEdge(
-                    id = item.id + it.item.id,
+                    id = "${craft.id}:${it.item.id}",
                     source = item.id,
-                    sourceHandle = craft.station.id,
+                    sourceHandle = craft.id,
                     target = it.item.id,
+                    requiredItemCount = it.count,
                 )
             }
         }

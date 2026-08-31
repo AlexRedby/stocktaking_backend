@@ -37,14 +37,14 @@ fun Item.toGraphItem(buffer: MutableMap<String, GraphItem>) = buffer.getOrPut(id
 fun ContainedItem.isTool() = this.attributes?.any { it?.type == "tool" && it.value == "true" } == true
 
 fun Barter.toStation() = Station(
-    id = id,
+    id = trader.id,
     name = trader.name,
     level = level,
     image = trader.imageLink!!,
 )
 
 fun Craft.toStation() = Station(
-    id = id,
+    id = station.id,
     name = station.name,
     level = level,
     image = station.imageLink!!,

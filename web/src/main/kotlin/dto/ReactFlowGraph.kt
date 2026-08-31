@@ -20,11 +20,18 @@ data class ReactFlowNodeData(
     val fullName: String,
     val shortName: String,
     val image: String,
-    val stations: List<ReactFlowStation>
+    val recipes: List<ReactFlowRecipe>,
 )
 
 @Serializable
-class ReactFlowStation(
+data class ReactFlowRecipe(
+    val id: String,
+    val outputCount: Double,
+    val station: ReactFlowStation,
+)
+
+@Serializable
+data class ReactFlowStation(
     val id: String,
     val name: String,
     val level: Int,
@@ -37,4 +44,5 @@ data class ReactFlowEdge(
     val source: String,
     val sourceHandle: String,
     val target: String,
+    val requiredItemCount: Double,
 )

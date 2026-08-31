@@ -31,6 +31,7 @@ class TarkovStorage(
                     .forEach {
                         it.item.toGraphItem(this).apply {
                             val craft = Craft(
+                                id = b.id,
                                 result = this,
                                 count = it.count,
                                 components = components,
@@ -51,6 +52,7 @@ class TarkovStorage(
                     .forEach {
                         it.item.toGraphItem(this).apply {
                             val craft = Craft(
+                                id = b.id,
                                 result = this,
                                 count = it.count,
                                 components = components,

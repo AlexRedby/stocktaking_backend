@@ -29,8 +29,50 @@ be one 24-character hexadecimal item ID. Letter case is accepted and normalized
 before lookup.
 
 A successful response is `200 OK` with a React Flow graph containing `nodes`
-and `edges`. A valid ID that does not exist in the current graph returns
-`404 Not Found`.
+and `edges`. Each result node groups its alternative recipes in `data.recipes`.
+Recipe IDs are also React Flow source-handle IDs. An edge belongs to the recipe
+named by `sourceHandle`; its ID is unique for that recipe and required item.
+Output and input quantities are represented by `outputCount` and
+`requiredItemCount`:
+
+```json
+{
+  "nodes": [
+    {
+      "id": "result-item-id",
+      "data": {
+        "label": "Result",
+        "fullName": "Result item",
+        "shortName": "Result",
+        "image": "https://example.com/result.png",
+        "recipes": [
+          {
+            "id": "recipe-id",
+            "outputCount": 2.0,
+            "station": {
+              "id": "station-id",
+              "name": "Workbench",
+              "level": 2,
+              "image": "https://example.com/workbench.png"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "recipe-id:required-item-id",
+      "source": "result-item-id",
+      "sourceHandle": "recipe-id",
+      "target": "required-item-id",
+      "requiredItemCount": 3.0
+    }
+  ]
+}
+```
+
+A valid ID that does not exist in the current graph returns `404 Not Found`.
 
 ## Errors
 

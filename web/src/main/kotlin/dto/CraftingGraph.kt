@@ -11,6 +11,7 @@ data class GraphItem(
 }
 
 data class Craft(
+    val id: String,
     val result: GraphItem,
     val count: Double,
     val components: Set<CraftComponent>,
@@ -29,4 +30,3 @@ data class Station(
     val level: Int,
     val image: String,
 )
-
