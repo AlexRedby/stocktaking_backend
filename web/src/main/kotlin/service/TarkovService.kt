@@ -6,7 +6,6 @@ import ru.alexredby.stocktaking.converter.toReactFlowEdges
 import ru.alexredby.stocktaking.converter.toReactFlowNodes
 import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.dto.ItemForComboBox
-import ru.alexredby.stocktaking.dto.ReactFlowEdge
 import ru.alexredby.stocktaking.dto.ReactFlowGraph
 import ru.alexredby.stocktaking.dto.ReactFlowNode
 
@@ -80,27 +79,6 @@ class TarkovService(
         visitedIds.remove(root.id)
 
         return res
-    }
-
-    private fun filterTree(
-        allNodes: Set<ReactFlowNode>,
-        edges: Set<ReactFlowEdge>,
-        neededIds: Set<String>,
-        visitedIds: MutableSet<String>,
-    ): Pair<Set<ReactFlowNode>, Set<ReactFlowEdge>> {
-        visitedIds.addAll(neededIds)
-
-        val foundEdges = edges.filter { neededIds.contains(it.source) }.toSet()
-        val foundNodes = allNodes.filter { neededIds.contains(it.id) }.toSet()
-
-        if (foundEdges.isNotEmpty()) {
-            val newIds = foundEdges.map { it.target }
-                .filter { !visitedIds.contains(it) }
-                .toSet()
-            val res = filterTree(allNodes, edges, newIds, visitedIds)
-            return foundNodes + res.first to foundEdges + res.second
-        }
-        return foundNodes to foundEdges
     }
 
     private fun searchForLoop(node: ReactFlowNode, graph: ReactFlowGraph, visitedIds: MutableSet<String>) {
