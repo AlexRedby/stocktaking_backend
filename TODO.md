@@ -2,10 +2,6 @@
 
 Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is cleanup or optimization.
 
-## P1 - API correctness
-
-- Decide the exact semantics of `/api/craftable-items`: either return only items with at least one craft or rename/document the endpoint as an all-item search. Done when fixtures containing leaf components and tools prove the selected behavior.
-
 ## P2 - Runtime reliability
 
 - Handle Tarkov.dev failures explicitly. Inspect Apollo GraphQL errors, distinguish valid empty data from upstream failure, configure endpoint/timeouts/retries, and return a stable 502/503 contract. Done when mocked tests cover timeout, transport error, GraphQL partial/error response, and valid empty data.

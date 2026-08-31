@@ -22,6 +22,7 @@ class TarkovService(
     suspend fun getItems(filter: String?): List<ItemForComboBox> = tarkovStorage
         .getFullCraftableTree()
         .values.asSequence()
+        .filter { it.crafts.isNotEmpty() }
         .filter { filter.isNullOrBlank() || phraseSearch(filter, it.shortName, it.fullName) }
         .map { it.toItemForComboBox() }
         .sortedBy { it.fullName }

@@ -4,11 +4,12 @@ The web service exposes its supported endpoints under `/api` and returns JSON.
 
 ## Search items
 
-`GET /api/craftable-items` accepts an optional `filter` query parameter. A
-missing or blank filter returns the complete current item search catalog. Search
-is case-insensitive. Whitespace and `#`, `/`, `"`, `,`, and `.` separate terms.
-Terms are matched in order at word boundaries within either `fullName` or
-`shortName`.
+`GET /api/craftable-items` accepts an optional `filter` query parameter and
+returns only items that have at least one recipe. Items without recipes are not
+included. A missing or blank filter returns the complete current craftable-item
+catalog. Search is case-insensitive. Whitespace and `#`, `/`, `"`, `,`, and `.`
+separate terms. Terms are matched in order at word boundaries within either
+`fullName` or `shortName`.
 
 A successful response is `200 OK` with an array:
 

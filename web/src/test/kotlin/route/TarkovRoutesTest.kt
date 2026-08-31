@@ -14,9 +14,11 @@ import io.ktor.server.routing.routing
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import ru.alexredby.stocktaking.dto.ApiErrorResponse
+import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.dto.ItemForComboBox
 import ru.alexredby.stocktaking.dto.ReactFlowGraph
+import ru.alexredby.stocktaking.dto.Station
 import ru.alexredby.stocktaking.service.TarkovService
 import ru.alexredby.stocktaking.service.TarkovStorage
 import kotlin.test.Test
@@ -59,6 +61,20 @@ class TarkovRoutesTest {
         }
         assertEquals(HttpStatusCode.OK, unicodeResponse.status)
         assertEquals(listOf(ROOT_ID), unicodeResponse.body<List<ItemForComboBox>>().map { it.id })
+    }
+
+    @Test
+    fun `craftable items excludes items without recipes`() = testApplication {
+        installApi()
+        val jsonClient = jsonClient()
+
+        val allItems = jsonClient.get("/api/craftable-items")
+        val leafSearch = jsonClient.get("/api/craftable-items") { parameter("filter", "Leaf") }
+        val toolSearch = jsonClient.get("/api/craftable-items") { parameter("filter", "Tool") }
+
+        assertEquals(listOf(ROOT_ID, SECOND_ID), allItems.body<List<ItemForComboBox>>().map { it.id })
+        assertEquals(emptyList(), leafSearch.body<List<ItemForComboBox>>())
+        assertEquals(emptyList(), toolSearch.body<List<ItemForComboBox>>())
     }
 
     @Test
@@ -153,8 +169,20 @@ class TarkovRoutesTest {
         const val SECOND_ID = "bbbbbbbbbbbbbbbbbbbbbbbb"
         const val UNKNOWN_ID = "cccccccccccccccccccccccc"
 
-        val ROOT = GraphItem(ROOT_ID, "Аптечка [Alpha]", "AFAK", "https://example.com/afak.png")
-        val SECOND = GraphItem(SECOND_ID, "Набор (Beta)", "KIT", "https://example.com/kit.png")
-        val TEST_GRAPH = linkedMapOf(ROOT_ID to ROOT, SECOND_ID to SECOND)
+        val LEAF = GraphItem("dddddddddddddddddddddddd", "Leaf component", "Leaf", "https://example.com/leaf.png")
+        val TOOL = GraphItem("eeeeeeeeeeeeeeeeeeeeeeee", "Reusable tool", "Tool", "https://example.com/tool.png")
+        val STATION = Station("station", "Workbench", 1, "https://example.com/station.png")
+        val ROOT = GraphItem(ROOT_ID, "Аптечка [Alpha]", "AFAK", "https://example.com/afak.png").apply {
+            crafts += Craft("root-recipe", this, 1.0, emptySet(), setOf(TOOL), STATION)
+        }
+        val SECOND = GraphItem(SECOND_ID, "Набор (Beta)", "KIT", "https://example.com/kit.png").apply {
+            crafts += Craft("second-recipe", this, 1.0, emptySet(), emptySet(), STATION)
+        }
+        val TEST_GRAPH = linkedMapOf(
+            ROOT_ID to ROOT,
+            SECOND_ID to SECOND,
+            LEAF.id to LEAF,
+            TOOL.id to TOOL,
+        )
     }
 }
