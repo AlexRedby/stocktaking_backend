@@ -33,6 +33,12 @@ The retry count is the number of additional attempts after the initial request.
 Only transport failures are retried. GraphQL errors and structurally invalid
 responses fail immediately.
 
+## Crafting graph cache
+
+The web service reuses a successfully loaded crafting graph for 15 minutes.
+Once it expires, the next request refreshes it from Tarkov.dev. A failed refresh
+returns the failure and leaves the graph expired so the following request retries.
+
 ## Supplying configuration
 
 For local Gradle execution, the following tasks load variables from the

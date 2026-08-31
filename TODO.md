@@ -4,7 +4,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P2 - Runtime reliability
 
-- Make graph cache initialization single-flight and thread-safe, keep the mutable cache private, and define refresh/TTL behavior so upstream data does not remain stale for the process lifetime. Done when concurrent first requests perform one upstream load and a deterministic test verifies refresh and failure behavior.
 - Resolve database lifecycle ownership. Either remove the unused PostgreSQL/jOOQ path from the web service or run Liquibase before the application becomes ready. Make migration resource lookup independent of the current working directory. Done when a fresh Docker volume receives the schema automatically and a database-backed smoke test passes, or when all unused DB infrastructure is removed.
 - Add production configuration and health checks. Production must run with Ktor development mode disabled; server, database, and Tarkov.dev settings must be externally configurable; readiness must include required dependencies. Done when the production container exposes passing liveness/readiness checks and no production-only setting is hardcoded.
 - Make the container/build inputs reproducible: pin the Gradle builder image to an exact supported version and run tests in the image/CI instead of using `-x test`. Done when a clean container build uses the wrapper-compatible version and executes the complete verification suite.

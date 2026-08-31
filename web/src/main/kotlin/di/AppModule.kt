@@ -9,6 +9,6 @@ import ru.alexredby.stocktaking.service.TarkovStorage
 val appModule = module {
     single { createJooqDslContext(get()) }
 
-    singleOf(::TarkovStorage)
+    single { TarkovStorage(get()) }
     singleOf(::TarkovService)
 }

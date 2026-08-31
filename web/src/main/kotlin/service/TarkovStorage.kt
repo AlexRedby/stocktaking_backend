@@ -1,5 +1,7 @@
 package ru.alexredby.stocktaking.service
 
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevClient
 import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.GraphItem
@@ -7,17 +9,29 @@ import ru.alexredby.stocktaking.util.toCraftComponents
 import ru.alexredby.stocktaking.util.toGraphItem
 import ru.alexredby.stocktaking.util.toStation
 import ru.alexredby.stocktaking.util.toTools
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
 
 class TarkovStorage(
-    private val tarkovDevClient: TarkovDevClient
+    private val tarkovDevClient: TarkovDevClient,
+    private val cacheTtl: Duration = 15.minutes,
+    private val timeSource: TimeSource = TimeSource.Monotonic,
 ) {
-    var cachedGraph: Map<String, GraphItem> = HashMap()
+    private val cacheMutex = Mutex()
 
-    suspend fun getFullCraftableTree(): Map<String, GraphItem> {
-        if (cachedGraph.isNotEmpty()) {
-            return cachedGraph
-        }
+    private var cache: CachedGraph? = null
 
+    suspend fun getFullCraftableTree(): Map<String, GraphItem> = cacheMutex.withLock {
+        cache?.takeIf { it.isFresh() }?.let { return@withLock it.graph }
+
+        val graph = loadGraph()
+        cache = CachedGraph(graph, timeSource.markNow())
+        graph
+    }
+
+    private suspend fun loadGraph(): Map<String, GraphItem> {
         val crafts = tarkovDevClient.getCrafts()
         val barters = tarkovDevClient.getBarters()
 
@@ -66,8 +80,14 @@ class TarkovStorage(
             }
         }
 
-        cachedGraph = idToItem
-
         return idToItem
     }
+
+    private fun CachedGraph.isFresh() =
+        loadedAt.elapsedNow() < cacheTtl
+
+    private data class CachedGraph(
+        val graph: Map<String, GraphItem>,
+        val loadedAt: TimeMark,
+    )
 }
