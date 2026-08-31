@@ -21,6 +21,17 @@ database migration application first. Liquibase is not part of the web runtime.
 Environment variables override the defaults. `DB_PASSWORD` must always be
 provided and has no fallback value.
 
+## Web server
+
+| Variable | Type | Required | Default |
+| --- | --- | --- | --- |
+| `APP_HOST` | String | No | `0.0.0.0` |
+| `APP_PORT` | Integer | No | `8080` |
+| `APP_DEVELOPMENT` | Boolean | No | `false` |
+
+Production uses `APP_DEVELOPMENT=false`. Development mode must be enabled only
+in a local environment that needs Ktor's development behavior.
+
 ## Tarkov.dev client
 
 The web service uses the following settings for its Tarkov.dev GraphQL client:

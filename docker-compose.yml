@@ -12,7 +12,7 @@ services:
     ports:
       - "${DB_PORT:-5432}:${DB_PORT:-5432}"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-stocktaking} -d ${DB_NAME:-stocktaking} -p ${DB_PORT:-5432}" ]
       interval: 10s
@@ -43,13 +43,20 @@ services:
       migration:
         condition: service_completed_successfully
     environment:
+      APP_HOST: "0.0.0.0"
+      APP_PORT: "${APP_PORT:-8080}"
+      APP_DEVELOPMENT: "false"
       DB_HOST: postgres
       DB_PORT: "${DB_PORT:-5432}"
       DB_NAME: "${DB_NAME:-stocktaking}"
       DB_USER: "${DB_USER:-stocktaking}"
       DB_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD must be set}"
+      TARKOV_DEV_ENDPOINT: "${TARKOV_DEV_ENDPOINT:-https://api.tarkov.dev/graphql}"
+      TARKOV_DEV_CONNECT_TIMEOUT_MILLIS: "${TARKOV_DEV_CONNECT_TIMEOUT_MILLIS:-5000}"
+      TARKOV_DEV_READ_TIMEOUT_MILLIS: "${TARKOV_DEV_READ_TIMEOUT_MILLIS:-15000}"
+      TARKOV_DEV_RETRY_COUNT: "${TARKOV_DEV_RETRY_COUNT:-2}"
     ports:
-      - "8080:8080"
+      - "${APP_PORT:-8080}:${APP_PORT:-8080}"
 
 volumes:
   postgres_data:

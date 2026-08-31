@@ -1,6 +1,17 @@
 # HTTP API contract
 
-The web service exposes its supported endpoints under `/api` and returns JSON.
+The web service exposes business endpoints under `/api` and health checks under
+`/health`. All supported endpoints return JSON.
+
+## Health checks
+
+`GET /health/live` returns `200 OK` with `{"status":"alive"}` while the
+application can serve requests. It does not call external dependencies.
+
+`GET /health/ready` checks PostgreSQL connectivity and loads the current
+Tarkov.dev crafting graph. It returns `200 OK` with `{"status":"ready"}` when
+both dependencies are available, or `503 Service Unavailable` with
+`{"status":"not_ready"}` otherwise.
 
 ## Search items
 

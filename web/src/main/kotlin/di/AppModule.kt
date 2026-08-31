@@ -3,6 +3,7 @@ package ru.alexredby.stocktaking.di
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import ru.alexredby.stocktaking.config.createJooqDslContext
+import ru.alexredby.stocktaking.service.HealthService
 import ru.alexredby.stocktaking.service.TarkovService
 import ru.alexredby.stocktaking.service.TarkovStorage
 
@@ -11,4 +12,5 @@ val appModule = module {
 
     single { TarkovStorage(get()) }
     singleOf(::TarkovService)
+    singleOf(::HealthService)
 }

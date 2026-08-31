@@ -25,7 +25,7 @@ fun createKtorServer(appConfig: AppConfig): EmbeddedServer<NettyApplicationEngin
         System.setProperty("io.ktor.development", "true")
     }
 
-    return embeddedServer(Netty, port = appConfig.server.port) {
+    return embeddedServer(Netty, host = appConfig.server.host, port = appConfig.server.port) {
         // allows foo/ and foo to be treated the same
         install(IgnoreTrailingSlash)
 

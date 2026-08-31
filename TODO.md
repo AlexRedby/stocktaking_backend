@@ -4,7 +4,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P2 - Runtime reliability
 
-- Add production configuration and health checks. Production must run with Ktor development mode disabled; server, database, and Tarkov.dev settings must be externally configurable; readiness must include required dependencies. Done when the production container exposes passing liveness/readiness checks and no production-only setting is hardcoded.
 - Make the container/build inputs reproducible: pin the Gradle builder image to an exact supported version and run tests in the image/CI instead of using `-x test`. Done when a clean container build uses the wrapper-compatible version and executes the complete verification suite.
 
 ## P2 - Tests and contract gates

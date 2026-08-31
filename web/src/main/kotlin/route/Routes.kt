@@ -15,6 +15,7 @@ private val logger = KotlinLogging.logger {}
 
 fun Application.configureRouting() {
     routing {
+        getHealthRoutes()
         getTarkovRoutes()
     }
 }

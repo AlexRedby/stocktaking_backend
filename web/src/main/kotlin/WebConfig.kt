@@ -13,6 +13,7 @@ data class AppConfig(
 )
 
 data class ServerConfig(
+    val host: String,
     val port: Int,
     val development: Boolean,
 )

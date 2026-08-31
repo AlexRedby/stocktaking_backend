@@ -11,6 +11,8 @@ import io.ktor.server.response.respond
 import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevResponseException
 import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevUnavailableException
 import ru.alexredby.stocktaking.dto.ApiErrorResponse
+import ru.alexredby.stocktaking.dto.HealthResponse
+import ru.alexredby.stocktaking.service.ReadinessCheckException
 import ru.alexredby.stocktaking.service.TarkovItemNotFoundException
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -39,6 +41,10 @@ fun Application.configureErrorHandling() {
                 code = "upstream_error",
                 message = "Tarkov.dev returned an invalid response",
             )
+        }
+        exception<ReadinessCheckException> { call, cause ->
+            logger.warn(cause) { "Readiness check failed" }
+            call.respond(HttpStatusCode.ServiceUnavailable, HealthResponse("not_ready"))
         }
         exception<Throwable> { call, cause ->
             if (cause is CancellationException) {
