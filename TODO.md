@@ -10,7 +10,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P2 - Dependency and toolchain upgrades
 
-- Review and upgrade the complete version catalog with `./gradlew dependencyUpdates`, including Kotlin, Ktor, Apollo, jOOQ, Liquibase, PostgreSQL, HikariCP, Logback/SLF4J, Hoplite, Koin, Testcontainers, dotenv, Javassist, and all Gradle plugins. Apply breaking upgrades in isolated groups and document required source/config/migration changes. Done when no intentionally accepted update is undocumented and the full unit, route, migration, integration, and container verification suite passes from a clean checkout.
 - Add an automated dependency-update workflow with grouped, scheduled proposals and CI verification. Keep Gradle wrapper updates separate from application-library updates and reject unstable versions unless explicitly approved. Done when a dry run produces reviewable groups without modifying generated jOOQ sources or publishing changes automatically.
 
 ## P3 - Maintainability and documentation
