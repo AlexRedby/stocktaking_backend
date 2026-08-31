@@ -4,7 +4,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P2 - Runtime reliability
 
-- Resolve database lifecycle ownership. Either remove the unused PostgreSQL/jOOQ path from the web service or run Liquibase before the application becomes ready. Make migration resource lookup independent of the current working directory. Done when a fresh Docker volume receives the schema automatically and a database-backed smoke test passes, or when all unused DB infrastructure is removed.
 - Add production configuration and health checks. Production must run with Ktor development mode disabled; server, database, and Tarkov.dev settings must be externally configurable; readiness must include required dependencies. Done when the production container exposes passing liveness/readiness checks and no production-only setting is hardcoded.
 - Make the container/build inputs reproducible: pin the Gradle builder image to an exact supported version and run tests in the image/CI instead of using `-x test`. Done when a clean container build uses the wrapper-compatible version and executes the complete verification suite.
 
@@ -12,7 +11,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 - Add unit tests for phrase search, graph traversal with cycles/diamonds, loop removal, duplicate recipes, recipe quantities, station handles, and craftable-item filtering.
 - Add Ktor route tests for all supported API success and error responses.
-- Add mocked Apollo client tests and a PostgreSQL/Testcontainers migration test.
 - Add a cross-repository smoke test for autocomplete and crafting-tree rendering through the supported production proxy/origin topology. Done when the backend test/check task and the shared smoke test run in CI from a clean checkout.
 
 ## P2 - Dependency and toolchain upgrades

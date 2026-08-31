@@ -4,6 +4,9 @@
 
 The web service and database migration application use the same database
 configuration contract.
+Database migrations must complete before the web service starts. Docker Compose
+enforces this with a one-shot migration service; direct launches must run the
+database migration application first. Liquibase is not part of the web runtime.
 
 ### Variables
 

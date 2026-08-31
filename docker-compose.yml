@@ -19,14 +19,29 @@ services:
       timeout: 5s
       retries: 5
 
+  migration:
+    build:
+      context: .
+      dockerfile: db-migration/Dockerfile
+    container_name: stocktaking-db-migration
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "${DB_PORT:-5432}"
+      DB_NAME: "${DB_NAME:-stocktaking}"
+      DB_USER: "${DB_USER:-stocktaking}"
+      DB_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD must be set}"
+
   app:
     build:
       context: .
       dockerfile: web/Dockerfile
     container_name: stocktaking-web
     depends_on:
-      postgres:
-        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
     environment:
       DB_HOST: postgres
       DB_PORT: "${DB_PORT:-5432}"

@@ -6,7 +6,6 @@ import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import org.jooq.impl.DefaultConfiguration
-import org.postgresql.Driver
 import ru.alexredby.stocktaking.AppConfig
 import javax.sql.DataSource
 
@@ -26,8 +25,6 @@ private fun createHikariConfig(appConfig: AppConfig) = HikariConfig().apply {
     jdbcUrl = "jdbc:postgresql://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}"
     username = dbConfig.user
     password = dbConfig.password
-    driverClassName = Driver::class.qualifiedName
-
     val cpConfig = dbConfig.cp
     maximumPoolSize = cpConfig.maximumPoolSize
     minimumIdle = cpConfig.minimumIdle

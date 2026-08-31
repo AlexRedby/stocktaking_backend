@@ -26,12 +26,14 @@ docker-compose up --build -d
 Linux/Mac:
 
 ```sh
+./gradlew :db-migration:runWithDotEnv
 ./gradlew :web:runWithDotEnv
 ```
 
 Windows:
 
 ```bash
+gradlew.bat :db-migration:runWithDotEnv
 gradlew.bat :web:runWithDotEnv
 ```
 

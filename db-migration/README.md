@@ -4,7 +4,7 @@
 
 The `db-migration` application brings the PostgreSQL schema up to date with
 Liquibase. It loads the shared typed database configuration, opens a JDBC
-connection, and applies `db/changelog-master.yaml`.
+connection, and applies pending migrations.
 
 Run it from the repository root after PostgreSQL is available. The
 `runWithDotEnv` task supplies database settings from the root `.env` file; see
@@ -26,8 +26,8 @@ gradlew.bat :db-migration:runWithDotEnv
 
 ## jOOQ code generation
 
-For Javassist reflection to work, run `JooqCodegenMain` with this JVM option:
+Run code generation from the repository root:
 
-```
---add-opens java.base/java.lang=ALL-UNNAMED
+```sh
+./gradlew :db-migration:jooqCodegen
 ```

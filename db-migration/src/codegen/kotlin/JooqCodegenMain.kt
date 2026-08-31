@@ -12,7 +12,6 @@ import org.jooq.meta.postgres.PostgresDatabase
 import org.postgresql.Driver
 import org.testcontainers.postgresql.PostgreSQLContainer
 import ru.alexredby.db.migration.jooq.overrideDefaultGeneratorStrategyForKotlin
-import ru.alexredby.db.migration.liquibase.applyLiquibaseMigration
 
 fun main() {
     overrideDefaultGeneratorStrategyForKotlin()
