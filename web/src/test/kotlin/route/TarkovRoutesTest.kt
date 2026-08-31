@@ -103,7 +103,14 @@ class TarkovRoutesTest {
         }
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertEquals("invalid_parameter", response.body<ApiErrorResponse>().code)
+        assertEquals(
+            ApiErrorResponse(
+                code = "invalid_parameter",
+                message = "Query parameter 'target_item_id' must be a 24-character hexadecimal ID",
+                parameter = "target_item_id",
+            ),
+            response.body(),
+        )
     }
 
     @Test
@@ -114,7 +121,14 @@ class TarkovRoutesTest {
         }
 
         assertEquals(HttpStatusCode.NotFound, response.status)
-        assertEquals("item_not_found", response.body<ApiErrorResponse>().code)
+        assertEquals(
+            ApiErrorResponse(
+                code = "item_not_found",
+                message = "No item exists for the requested ID",
+                parameter = "target_item_id",
+            ),
+            response.body(),
+        )
     }
 
     @Test
@@ -131,6 +145,16 @@ class TarkovRoutesTest {
     }
 
     @Test
+    fun `tool names returns sorted unique names`() = testApplication {
+        installApi()
+
+        val response = jsonClient().get("/api/tool-names")
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(listOf("Awl", "Reusable tool"), response.body())
+    }
+
+    @Test
     fun `supported routes return a stable error for an unexpected failure`() = testApplication {
         installApi(failure = IllegalStateException("upstream failed"))
         val jsonClient = jsonClient()
@@ -139,11 +163,18 @@ class TarkovRoutesTest {
         val treeResponse = jsonClient.get("/api/crafting-tree") {
             parameter("target_item_id", ROOT_ID)
         }
+        val toolsResponse = jsonClient.get("/api/tool-names")
 
-        assertEquals(HttpStatusCode.InternalServerError, itemsResponse.status)
-        assertEquals("internal_error", itemsResponse.body<ApiErrorResponse>().code)
-        assertEquals(HttpStatusCode.InternalServerError, treeResponse.status)
-        assertEquals("internal_error", treeResponse.body<ApiErrorResponse>().code)
+        listOf(itemsResponse, treeResponse, toolsResponse).forEach { response ->
+            assertEquals(HttpStatusCode.InternalServerError, response.status)
+            assertEquals(
+                ApiErrorResponse(
+                    code = "internal_error",
+                    message = "The request could not be completed",
+                ),
+                response.body(),
+            )
+        }
     }
 
     @Test
@@ -153,7 +184,13 @@ class TarkovRoutesTest {
         val response = jsonClient().get("/api/craftable-items")
 
         assertEquals(HttpStatusCode.ServiceUnavailable, response.status)
-        assertEquals("upstream_unavailable", response.body<ApiErrorResponse>().code)
+        assertEquals(
+            ApiErrorResponse(
+                code = "upstream_unavailable",
+                message = "Tarkov.dev is temporarily unavailable",
+            ),
+            response.body(),
+        )
     }
 
     @Test
@@ -165,7 +202,13 @@ class TarkovRoutesTest {
         }
 
         assertEquals(HttpStatusCode.BadGateway, response.status)
-        assertEquals("upstream_error", response.body<ApiErrorResponse>().code)
+        assertEquals(
+            ApiErrorResponse(
+                code = "upstream_error",
+                message = "Tarkov.dev returned an invalid response",
+            ),
+            response.body(),
+        )
     }
 
     private fun ApplicationTestBuilder.installApi(failure: Exception? = null) {
@@ -196,9 +239,11 @@ class TarkovRoutesTest {
 
         val LEAF = GraphItem("dddddddddddddddddddddddd", "Leaf component", "Leaf", "https://example.com/leaf.png")
         val TOOL = GraphItem("eeeeeeeeeeeeeeeeeeeeeeee", "Reusable tool", "Tool", "https://example.com/tool.png")
+        val SECOND_TOOL = GraphItem("ffffffffffffffffffffffff", "Awl", "Awl", "https://example.com/awl.png")
         val STATION = Station("station", "Workbench", 1, "https://example.com/station.png")
         val ROOT = GraphItem(ROOT_ID, "Аптечка [Alpha]", "AFAK", "https://example.com/afak.png").apply {
             crafts += Craft("root-recipe", this, 1.0, emptySet(), setOf(TOOL), STATION)
+            crafts += Craft("second-root-recipe", this, 1.0, emptySet(), setOf(TOOL, SECOND_TOOL), STATION)
         }
         val SECOND = GraphItem(SECOND_ID, "Набор (Beta)", "KIT", "https://example.com/kit.png").apply {
             crafts += Craft("second-recipe", this, 1.0, emptySet(), emptySet(), STATION)

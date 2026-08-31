@@ -5,7 +5,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 ## P2 - Tests and contract gates
 
 - Add unit tests for phrase search, graph traversal with cycles/diamonds, loop removal, duplicate recipes, recipe quantities, station handles, and craftable-item filtering.
-- Add Ktor route tests for all supported API success and error responses.
 - Add a cross-repository smoke test for autocomplete and crafting-tree rendering through the supported production proxy/origin topology. Done when the backend test/check task and the shared smoke test run in CI from a clean checkout.
 
 ## P3 - Maintainability and documentation

@@ -86,6 +86,17 @@ Output and input quantities are represented by `outputCount` and
 
 A valid ID that does not exist in the current graph returns `404 Not Found`.
 
+## List tool names
+
+`GET /api/tool-names` returns `200 OK` with the sorted set of unique tool names
+used by current crafts:
+
+```json
+[
+  "Screwdriver"
+]
+```
+
 ## Errors
 
 Errors from these endpoints use stable `code` and `message` fields. Errors tied
