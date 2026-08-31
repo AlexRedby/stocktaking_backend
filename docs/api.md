@@ -93,4 +93,6 @@ to a query parameter also include `parameter`:
 | `400` | `missing_parameter` | `target_item_id` was not provided. |
 | `400` | `invalid_parameter` | `target_item_id` is not a 24-character hexadecimal ID. |
 | `404` | `item_not_found` | No current graph item has the requested ID. |
+| `502` | `upstream_error` | Tarkov.dev returned GraphQL errors or an invalid response. |
+| `503` | `upstream_unavailable` | Tarkov.dev transport attempts failed or timed out. |
 | `500` | `internal_error` | The request failed unexpectedly without exposing internal details. |

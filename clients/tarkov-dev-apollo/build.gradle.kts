@@ -7,6 +7,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.configuration)
+
     // Add this dependency to enable Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
     // Extension over serialization for ktor
@@ -17,6 +19,8 @@ dependencies {
     implementation(libs.koin.logger.slf4j)
 
     implementation(libs.apollo.runtime)
+
+    testImplementation(libs.mockk)
 }
 
 apollo {

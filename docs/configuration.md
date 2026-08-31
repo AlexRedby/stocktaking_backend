@@ -1,9 +1,11 @@
-# Database configuration contract
+# Runtime configuration contract
+
+## Database
 
 The web service and database migration application use the same database
 configuration contract.
 
-## Variables
+### Variables
 
 | Variable | Type | Required | Default |
 | --- | --- | --- | --- |
@@ -15,6 +17,21 @@ configuration contract.
 
 Environment variables override the defaults. `DB_PASSWORD` must always be
 provided and has no fallback value.
+
+## Tarkov.dev client
+
+The web service uses the following settings for its Tarkov.dev GraphQL client:
+
+| Variable | Type | Required | Default |
+| --- | --- | --- | --- |
+| `TARKOV_DEV_ENDPOINT` | String | No | `https://api.tarkov.dev/graphql` |
+| `TARKOV_DEV_CONNECT_TIMEOUT_MILLIS` | Long | No | `5000` |
+| `TARKOV_DEV_READ_TIMEOUT_MILLIS` | Long | No | `15000` |
+| `TARKOV_DEV_RETRY_COUNT` | Integer | No | `2` |
+
+The retry count is the number of additional attempts after the initial request.
+Only transport failures are retried. GraphQL errors and structurally invalid
+responses fail immediately.
 
 ## Supplying configuration
 

@@ -13,6 +13,8 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerCon
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
+import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevResponseException
+import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevUnavailableException
 import ru.alexredby.stocktaking.dto.ApiErrorResponse
 import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.GraphItem
@@ -142,6 +144,28 @@ class TarkovRoutesTest {
         assertEquals("internal_error", itemsResponse.body<ApiErrorResponse>().code)
         assertEquals(HttpStatusCode.InternalServerError, treeResponse.status)
         assertEquals("internal_error", treeResponse.body<ApiErrorResponse>().code)
+    }
+
+    @Test
+    fun `transport failure returns service unavailable`() = testApplication {
+        installApi(failure = TarkovDevUnavailableException(IllegalStateException("offline")))
+
+        val response = jsonClient().get("/api/craftable-items")
+
+        assertEquals(HttpStatusCode.ServiceUnavailable, response.status)
+        assertEquals("upstream_unavailable", response.body<ApiErrorResponse>().code)
+    }
+
+    @Test
+    fun `invalid GraphQL response returns bad gateway`() = testApplication {
+        installApi(failure = TarkovDevResponseException("GraphQL error"))
+
+        val response = jsonClient().get("/api/crafting-tree") {
+            parameter("target_item_id", ROOT_ID)
+        }
+
+        assertEquals(HttpStatusCode.BadGateway, response.status)
+        assertEquals("upstream_error", response.body<ApiErrorResponse>().code)
     }
 
     private fun ApplicationTestBuilder.installApi(failure: Exception? = null) {

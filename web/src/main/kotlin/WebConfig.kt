@@ -1,13 +1,15 @@
 package ru.alexredby.stocktaking
 
 import ru.alexredby.stocktaking.configuration.DatabaseConfig
+import ru.alexredby.stocktaking.configuration.TarkovDevConfig
 import ru.alexredby.stocktaking.configuration.loadConfig
 
 fun createAppConfig(): AppConfig = loadConfig("/application.conf")
 
 data class AppConfig(
     val server: ServerConfig,
-    val database: DatabaseConfig
+    val database: DatabaseConfig,
+    val tarkovDev: TarkovDevConfig,
 )
 
 data class ServerConfig(

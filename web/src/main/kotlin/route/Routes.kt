@@ -10,6 +10,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import org.koin.ktor.ext.inject
+import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevResponseException
+import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevUnavailableException
 import ru.alexredby.stocktaking.dto.ApiErrorResponse
 import ru.alexredby.stocktaking.service.TarkovService
 import ru.alexredby.stocktaking.service.TarkovItemNotFoundException
@@ -35,6 +37,12 @@ internal fun Route.installTarkovApiRoutes(tarkovService: TarkovService) {
             val filter = call.queryParameters["filter"]
             val items = try {
                 tarkovService.getItems(filter)
+            } catch (exception: TarkovDevUnavailableException) {
+                call.respondUpstreamUnavailable()
+                return@get
+            } catch (exception: TarkovDevResponseException) {
+                call.respondUpstreamError()
+                return@get
             } catch (exception: CancellationException) {
                 throw exception
             } catch (exception: Exception) {
@@ -76,6 +84,12 @@ internal fun Route.installTarkovApiRoutes(tarkovService: TarkovService) {
                     parameter = TARGET_ITEM_ID_PARAMETER,
                 )
                 return@get
+            } catch (exception: TarkovDevUnavailableException) {
+                call.respondUpstreamUnavailable()
+                return@get
+            } catch (exception: TarkovDevResponseException) {
+                call.respondUpstreamError()
+                return@get
             } catch (exception: CancellationException) {
                 throw exception
             } catch (exception: Exception) {
@@ -89,7 +103,22 @@ internal fun Route.installTarkovApiRoutes(tarkovService: TarkovService) {
         }
 
         get("/tool-names") {
-            call.respond(tarkovService.getAllToolNames())
+            val toolNames = try {
+                tarkovService.getAllToolNames()
+            } catch (exception: TarkovDevUnavailableException) {
+                call.respondUpstreamUnavailable()
+                return@get
+            } catch (exception: TarkovDevResponseException) {
+                call.respondUpstreamError()
+                return@get
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                logger.error(exception) { "Failed to load tool names" }
+                call.respondInternalError()
+                return@get
+            }
+            call.respond(toolNames)
         }
     }
 }
@@ -99,6 +128,22 @@ private suspend fun ApplicationCall.respondInternalError() {
         status = HttpStatusCode.InternalServerError,
         code = "internal_error",
         message = "The request could not be completed",
+    )
+}
+
+private suspend fun ApplicationCall.respondUpstreamUnavailable() {
+    respondApiError(
+        status = HttpStatusCode.ServiceUnavailable,
+        code = "upstream_unavailable",
+        message = "Tarkov.dev is temporarily unavailable",
+    )
+}
+
+private suspend fun ApplicationCall.respondUpstreamError() {
+    respondApiError(
+        status = HttpStatusCode.BadGateway,
+        code = "upstream_error",
+        message = "Tarkov.dev returned an invalid response",
     )
 }
 
