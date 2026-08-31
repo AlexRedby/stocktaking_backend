@@ -17,6 +17,11 @@ variables in the run configuration.
 
 ## Docker
 
+The production image builds with Gradle 9.7.1 and JDK 25, matching the project
+wrapper and Kotlin toolchain. Its builder stage runs all tests that do not need
+a Docker daemon. CI runs the complete suite, including the Testcontainers
+database migration test, before building the image.
+
 ```sh
 docker-compose up --build -d
 ```

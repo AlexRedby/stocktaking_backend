@@ -1,11 +1,11 @@
-FROM gradle:9-jdk21-alpine AS builder
+FROM gradle:9.7.1-jdk25-alpine AS builder
 
 WORKDIR /app
 
 COPY . .
 RUN gradle :db-migration:installDist --no-daemon -x test --stacktrace
 
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 
 WORKDIR /app
 

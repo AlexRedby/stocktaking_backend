@@ -3,7 +3,7 @@ import ru.alexredby.convention.registerRunWithDotEnv
 group = "ru.alexredby.db.migration"
 version = "1.0-SNAPSHOT"
 
-val codegen by sourceSets.creating {
+val codegen = sourceSets.create("codegen") {
     compileClasspath += sourceSets.main.get().output
     runtimeClasspath += sourceSets.main.get().output
 }
