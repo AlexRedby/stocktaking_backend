@@ -1,0 +1,53 @@
+# HTTP API contract
+
+The web service exposes its supported endpoints under `/api` and returns JSON.
+
+## Search items
+
+`GET /api/craftable-items` accepts an optional `filter` query parameter. A
+missing or blank filter returns the complete current item search catalog. Search
+is case-insensitive. Whitespace and `#`, `/`, `"`, `,`, and `.` separate terms.
+Terms are matched in order at word boundaries within either `fullName` or
+`shortName`.
+
+A successful response is `200 OK` with an array:
+
+```json
+[
+  {
+    "id": "5c0a840b86f7742ffa4f2482",
+    "fullName": "THICC Items case",
+    "shortName": "T H I C C"
+  }
+]
+```
+
+## Build a crafting tree
+
+`GET /api/crafting-tree` requires `target_item_id`. The value must
+be one 24-character hexadecimal item ID. Letter case is accepted and normalized
+before lookup.
+
+A successful response is `200 OK` with a React Flow graph containing `nodes`
+and `edges`. A valid ID that does not exist in the current graph returns
+`404 Not Found`.
+
+## Errors
+
+Errors from these endpoints use stable `code` and `message` fields. Errors tied
+to a query parameter also include `parameter`:
+
+```json
+{
+  "code": "invalid_parameter",
+  "message": "Query parameter 'target_item_id' must be a 24-character hexadecimal ID",
+  "parameter": "target_item_id"
+}
+```
+
+| Status | Code | Meaning |
+| --- | --- | --- |
+| `400` | `missing_parameter` | `target_item_id` was not provided. |
+| `400` | `invalid_parameter` | `target_item_id` is not a 24-character hexadecimal ID. |
+| `404` | `item_not_found` | No current graph item has the requested ID. |
+| `500` | `internal_error` | The request failed unexpectedly without exposing internal details. |

@@ -13,11 +13,10 @@ import ru.alexredby.stocktaking.dto.ReactFlowNode
 val logger = KotlinLogging.logger { }
 
 class TarkovService(
-    private val tarkovStorage: TarkovStorage
+    private val tarkovStorage: TarkovStorage,
 ) {
     companion object {
-        const val THICC_ITEM_CASE_ID = "5c0a840b86f7742ffa4f2482"
-        val wordDelimiters = "([#/\",.]|\\s)+".toRegex()
+        private val wordDelimiters = "([#/\",.]|\\s)+".toRegex()
     }
 
     suspend fun getItems(filter: String?): List<ItemForComboBox> = tarkovStorage
@@ -37,13 +36,13 @@ class TarkovService(
         .sorted()
         .toSet()
 
-    suspend fun getReactFlowTree(targetItemId: String?): ReactFlowGraph {
+    suspend fun getReactFlowTree(targetItemId: String): ReactFlowGraph {
         val idToItem = tarkovStorage.getFullCraftableTree()
 
         logger.info { "Requested crafting tree for item with id = $targetItemId" }
 
         // Exclude everything except selected item and its subtree
-        val rootNode = idToItem[targetItemId ?: THICC_ITEM_CASE_ID]!!
+        val rootNode = idToItem[targetItemId] ?: throw TarkovItemNotFoundException()
         val neededItems = findAllItemsInSubTreeFor(rootNode, mutableSetOf())
 
         val nodes = neededItems.toReactFlowNodes()
@@ -51,14 +50,16 @@ class TarkovService(
         val graph = ReactFlowGraph(nodes, edges)
 
         // Remove all loops for better graph readability
-        searchForLoop(nodes.find { it.id == rootNode.id }!!, graph, mutableSetOf())
+        val rootFlowNode = nodes.find { it.id == rootNode.id }
+            ?: error("Converted graph does not contain its root item")
+        searchForLoop(rootFlowNode, graph, mutableSetOf())
 
         return graph
     }
 
     private fun phraseSearch(phrase: String, vararg targets: String): Boolean {
         val phraseRegex = phrase.split(wordDelimiters)
-            .joinToString(separator = "") { "\\b$it.*" }
+            .joinToString(prefix = "(?U)", separator = "") { "\\b${Regex.escape(it)}.*" }
             .toRegex(RegexOption.IGNORE_CASE)
 
         return targets.any { it.contains(phraseRegex) }
@@ -117,3 +118,5 @@ class TarkovService(
         visitedIds.remove(node.id)
     }
 }
+
+class TarkovItemNotFoundException : NoSuchElementException("Tarkov item was not found")

@@ -40,6 +40,11 @@ gradlew.bat :web:runWithDotEnv
 See the [db-migration README](db-migration/README.md) for the module description
 and run commands.
 
+## HTTP API
+
+See the [HTTP API contract](docs/api.md) for supported requests, responses, and
+errors.
+
 # Development
 
 ## Tarkov.dev Apollo schema and generated sources

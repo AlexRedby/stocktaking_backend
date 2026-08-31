@@ -4,7 +4,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P1 - API correctness
 
-- Define and enforce request/error contracts for `/api/crafting-tree` and `/api/craftable-items`. Make `target_item_id` required, return 400 for missing or malformed input and 404 for an unknown item, and map failures to a stable JSON error payload instead of `!!`/uncaught exceptions. Escape search text with `Regex.escape` or replace the regex implementation so characters such as `[`, `(`, `*`, quotes, and Unicode cannot produce a 500. Done when route tests cover success, missing ID, unknown ID, empty filter, punctuation, and Unicode.
 - Preserve recipe identity and quantities in the graph contract. Edge IDs must be unique across alternative crafts/stations, and the DTO must carry recipe ID, output count, required item count, and explicit grouping of alternative recipes. Deduplicate station/handle entries by stable identity. Done when a fixture with two recipes sharing the same source and component round-trips without duplicate React Flow IDs or lost quantities.
 - Decide the exact semantics of `/api/craftable-items`: either return only items with at least one craft or rename/document the endpoint as an all-item search. Done when fixtures containing leaf components and tools prove the selected behavior.
 

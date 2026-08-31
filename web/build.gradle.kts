@@ -47,6 +47,10 @@ dependencies {
     implementation(libs.jooq.kotlin) {
         because("Need to get kotlin native feel when working with jOOQ")
     }
+
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.mockk)
 }
 
 application {
