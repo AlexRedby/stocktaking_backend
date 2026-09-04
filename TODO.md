@@ -8,4 +8,4 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 
 ## P3 - Maintainability and documentation
 
-- Update `README.md` and `db-migration/README.md` with the architecture, complete environment-variable list, migration workflow, production startup, API/error contract, health checks, and verification commands. Done when a new checkout can be launched and verified by following only the documentation.
+- Verify the backend operating documentation from a clean checkout. Remove this item when the documented Gradle and Docker Compose commands pass and launch the service.

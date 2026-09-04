@@ -1,102 +1,83 @@
-# Configuration
+# Stocktaking backend
 
-Local database settings are read from the ignored root `.env` file by the
-documented Gradle run tasks. Web startup and migrations use the same typed
-database configuration contract. See
-[docs/configuration.md](docs/configuration.md) for the supported variables,
-defaults, precedence, and failure behavior.
+The backend loads crafting and barter data from Tarkov.dev, builds the crafting
+graph, and exposes the HTTP API used for item autocomplete, crafting trees, and
+tool names. The Ktor application owns the API and graph cache. Database schema
+changes are applied by a separate migration application, not by the web runtime.
 
-## .env file
+## Run
 
-Copy `.env.example` to `.env` in the repository root and replace the password
-placeholder. Docker Compose reads the same file automatically. For local Gradle
-launches, use `:web:runWithDotEnv`; direct IDE launches must provide the same
-variables in the run configuration.
+Create the repository-root `.env` file from `.env.example`. The supported
+variables, defaults, and validation rules are defined in the
+[configuration contract](docs/configuration.md).
 
-# Run app
-
-## Docker
-
-The production image builds with Gradle 9.7.1 and JDK 25, matching the project
-wrapper and Kotlin toolchain. Its builder stage runs all tests that do not need
-a Docker daemon. CI runs the complete suite, including the Testcontainers
-database migration test, before building the image.
+### Docker Compose
 
 ```sh
 docker-compose up --build -d
 ```
 
-## Local
+Compose starts PostgreSQL, applies migrations, and then starts the web service.
+The service is ready when `GET http://localhost:8080/health/ready` returns
+`200 OK`.
 
-Linux/Mac:
+### Local Gradle processes
+
+Run PostgreSQL and apply migrations using the
+[database tooling instructions](db-migration/README.md). Then start the web
+service:
 
 ```sh
-./gradlew :db-migration:runWithDotEnv
 ./gradlew :web:runWithDotEnv
 ```
 
-Windows:
+On Windows, use `gradlew.bat` with the same task names.
 
-```bash
-gradlew.bat :db-migration:runWithDotEnv
-gradlew.bat :web:runWithDotEnv
-```
+## Database tooling
 
-## Database migrations
-
-See the [db-migration README](db-migration/README.md) for the module description
-and run commands.
+The [database tooling instructions](db-migration/README.md) describe schema
+migrations and jOOQ code generation.
 
 ## HTTP API
 
-See the [HTTP API contract](docs/api.md) for supported requests, responses, and
-errors.
+The [HTTP API contract](docs/api.md) defines the supported endpoints, graph
+payload, health checks, and error responses.
 
-# Development
+## Development
 
-## Tarkov.dev Apollo schema and generated sources
+### Verification
 
-The checked-in schema is
-`clients/tarkov-dev-apollo/src/main/graphql/tarkov-dev.graphqls`. Refresh it
-from the configured Tarkov.dev introspection endpoint before reviewing an API
+With Docker available, run the complete build, including the Testcontainers
+migration test:
+
+```sh
+./gradlew build --no-daemon
+docker-compose build
+```
+
+### Tarkov.dev schema and generated sources
+
+Refresh the checked-in Tarkov.dev GraphQL schema before reviewing an upstream
 contract change:
 
 ```sh
 ./gradlew :clients:tarkov-dev-apollo:downloadTarkovdevApolloSchemaFromIntrospection
 ```
 
-Generate the Kotlin operation models after changing the schema or GraphQL
-operations:
+After changing the schema or GraphQL operations, regenerate the Apollo models:
 
 ```sh
 ./gradlew :clients:tarkov-dev-apollo:generateTarkovdevApolloSources
 ```
 
-On Windows use `gradlew.bat` with the same task names. Generated Kotlin sources
-live under the module's `build/` directory and must not be edited or committed.
+Generated Apollo sources live under the module's `build` directory and are not
+committed.
 
-To check possible dependencies upgrade run next command and update in `gradle/libs.versions.toml` manually...
+### Dependency and Gradle updates
 
-Linux/Mac:
 ```sh
 ./gradlew dependencyUpdates
-```
-
-Windows:
-
-```bash
-gradlew.bat dependencyUpdates
-```
-
-To upgrade gradle wrapper version run...
-
-Linux/Mac:
-```sh
 ./gradlew wrapper --gradle-version latest
 ```
 
-Windows:
-
-```bash
-gradlew.bat wrapper --gradle-version latest
-```
+Review reported dependency updates before changing `gradle/libs.versions.toml`.
