@@ -6,16 +6,16 @@ import com.apollographql.apollo.api.ApolloResponse
 import com.apollographql.apollo.api.Error
 import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.exception.ApolloNetworkException
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import java.net.SocketTimeoutException
 import java.util.UUID
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertIs
 
 class TarkovDevClientTest {
     @Test
@@ -32,7 +32,7 @@ class TarkovDevClientTest {
             data = FetchAllCraftsQuery.Data(listOf(craft)),
         )
 
-        assertEquals(listOf(craft), client.getCrafts())
+        client.getCrafts() shouldBe listOf(craft)
     }
 
     @Test
@@ -49,7 +49,7 @@ class TarkovDevClientTest {
             data = FetchAllBartersQuery.Data(listOf(barter)),
         )
 
-        assertEquals(listOf(barter), client.getBarters())
+        client.getBarters() shouldBe listOf(barter)
     }
 
     @Test
@@ -60,16 +60,16 @@ class TarkovDevClientTest {
             errors = listOf(Error.Builder("upstream error").build()),
         )
 
-        val failure = assertFailsWith<TarkovDevResponseException> { client.getCrafts() }
-        assertEquals("Tarkov.dev returned GraphQL errors", failure.message)
+        val failure = shouldThrow<TarkovDevResponseException> { client.getCrafts() }
+        failure.message shouldBe "Tarkov.dev returned GraphQL errors"
     }
 
     @Test
     fun `rejects a response without data`() = runCraftsClientTest { client, call ->
         coEvery { call.execute() } returns response(FetchAllCraftsQuery())
 
-        val failure = assertFailsWith<TarkovDevResponseException> { client.getCrafts() }
-        assertEquals("Tarkov.dev response is missing data", failure.message)
+        val failure = shouldThrow<TarkovDevResponseException> { client.getCrafts() }
+        failure.message shouldBe "Tarkov.dev response is missing data"
     }
 
     @Test
@@ -79,8 +79,8 @@ class TarkovDevClientTest {
             data = FetchAllCraftsQuery.Data(null),
         )
 
-        val failure = assertFailsWith<TarkovDevResponseException> { client.getCrafts() }
-        assertEquals("Tarkov.dev response is missing crafts", failure.message)
+        val failure = shouldThrow<TarkovDevResponseException> { client.getCrafts() }
+        failure.message shouldBe "Tarkov.dev response is missing crafts"
     }
 
     @Test
@@ -90,8 +90,8 @@ class TarkovDevClientTest {
             data = FetchAllBartersQuery.Data(null),
         )
 
-        val failure = assertFailsWith<TarkovDevResponseException> { client.getBarters() }
-        assertEquals("Tarkov.dev response is missing barters", failure.message)
+        val failure = shouldThrow<TarkovDevResponseException> { client.getBarters() }
+        failure.message shouldBe "Tarkov.dev response is missing barters"
     }
 
     @Test
@@ -102,15 +102,15 @@ class TarkovDevClientTest {
             exception = ApolloNetworkException(platformCause = timeout),
         )
 
-        val failure = assertFailsWith<TarkovDevUnavailableException> { client.getCrafts() }
-        assertEquals("Tarkov.dev is unavailable", failure.message)
-        val networkFailure = assertIs<ApolloNetworkException>(failure.cause)
-        assertEquals(timeout, networkFailure.platformCause)
+        val failure = shouldThrow<TarkovDevUnavailableException> { client.getCrafts() }
+        failure.message shouldBe "Tarkov.dev is unavailable"
+        val networkFailure = failure.cause.shouldBeInstanceOf<ApolloNetworkException>()
+        networkFailure.platformCause shouldBe timeout
     }
 
     private fun runCraftsClientTest(
         block: suspend (TarkovDevClient, ApolloCall<FetchAllCraftsQuery.Data>) -> Unit,
-    ) = runBlocking {
+    ) = runTest {
         val apolloClient = mockk<ApolloClient>()
         val call = mockk<ApolloCall<FetchAllCraftsQuery.Data>>()
         every { apolloClient.query(FetchAllCraftsQuery()) } returns call
@@ -120,7 +120,7 @@ class TarkovDevClientTest {
 
     private fun runBartersClientTest(
         block: suspend (TarkovDevClient, ApolloCall<FetchAllBartersQuery.Data>) -> Unit,
-    ) = runBlocking {
+    ) = runTest {
         val apolloClient = mockk<ApolloClient>()
         val call = mockk<ApolloCall<FetchAllBartersQuery.Data>>()
         every { apolloClient.query(FetchAllBartersQuery()) } returns call

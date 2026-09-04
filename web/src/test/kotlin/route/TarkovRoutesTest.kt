@@ -1,5 +1,9 @@
 package ru.alexredby.stocktaking.route
 
+import io.kotest.assertions.withClue
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.ktor.client.call.body
@@ -24,7 +28,6 @@ import ru.alexredby.stocktaking.dto.Station
 import ru.alexredby.stocktaking.service.TarkovService
 import ru.alexredby.stocktaking.service.TarkovStorage
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class TarkovRoutesTest {
     @Test
@@ -36,13 +39,10 @@ class TarkovRoutesTest {
             parameter("filter", "")
         }
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(
-            listOf(
-                ItemForComboBox(ROOT_ID, "Аптечка [Alpha]", "AFAK"),
-                ItemForComboBox(SECOND_ID, "Набор (Beta)", "KIT"),
-            ),
-            response.body(),
+        response.status shouldBe HttpStatusCode.OK
+        response.body<List<ItemForComboBox>>() shouldBe listOf(
+            ItemForComboBox(ROOT_ID, "Аптечка [Alpha]", "AFAK"),
+            ItemForComboBox(SECOND_ID, "Набор (Beta)", "KIT"),
         )
     }
 
@@ -55,14 +55,16 @@ class TarkovRoutesTest {
             val response = jsonClient.get("/api/craftable-items") {
                 parameter("filter", filter)
             }
-            assertEquals(HttpStatusCode.OK, response.status, "filter=$filter")
+            withClue("filter=$filter") {
+                response.status shouldBe HttpStatusCode.OK
+            }
         }
 
         val unicodeResponse = jsonClient.get("/api/craftable-items") {
             parameter("filter", "аптечка")
         }
-        assertEquals(HttpStatusCode.OK, unicodeResponse.status)
-        assertEquals(listOf(ROOT_ID), unicodeResponse.body<List<ItemForComboBox>>().map { it.id })
+        unicodeResponse.status shouldBe HttpStatusCode.OK
+        unicodeResponse.body<List<ItemForComboBox>>().map { it.id } shouldBe listOf(ROOT_ID)
     }
 
     @Test
@@ -74,9 +76,9 @@ class TarkovRoutesTest {
         val leafSearch = jsonClient.get("/api/craftable-items") { parameter("filter", "Leaf") }
         val toolSearch = jsonClient.get("/api/craftable-items") { parameter("filter", "Tool") }
 
-        assertEquals(listOf(ROOT_ID, SECOND_ID), allItems.body<List<ItemForComboBox>>().map { it.id })
-        assertEquals(emptyList(), leafSearch.body<List<ItemForComboBox>>())
-        assertEquals(emptyList(), toolSearch.body<List<ItemForComboBox>>())
+        allItems.body<List<ItemForComboBox>>().map { it.id } shouldBe listOf(ROOT_ID, SECOND_ID)
+        leafSearch.body<List<ItemForComboBox>>().shouldBeEmpty()
+        toolSearch.body<List<ItemForComboBox>>().shouldBeEmpty()
     }
 
     @Test
@@ -84,14 +86,11 @@ class TarkovRoutesTest {
         installApi()
         val response = jsonClient().get("/api/crafting-tree")
 
-        assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertEquals(
-            ApiErrorResponse(
-                code = "missing_parameter",
-                message = "Query parameter 'target_item_id' is required",
-                parameter = "target_item_id",
-            ),
-            response.body(),
+        response.status shouldBe HttpStatusCode.BadRequest
+        response.body<ApiErrorResponse>() shouldBe ApiErrorResponse(
+            code = "missing_parameter",
+            message = "Query parameter 'target_item_id' is required",
+            parameter = "target_item_id",
         )
     }
 
@@ -102,14 +101,11 @@ class TarkovRoutesTest {
             parameter("target_item_id", "not-an-item-id")
         }
 
-        assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertEquals(
-            ApiErrorResponse(
-                code = "invalid_parameter",
-                message = "Query parameter 'target_item_id' must be a 24-character hexadecimal ID",
-                parameter = "target_item_id",
-            ),
-            response.body(),
+        response.status shouldBe HttpStatusCode.BadRequest
+        response.body<ApiErrorResponse>() shouldBe ApiErrorResponse(
+            code = "invalid_parameter",
+            message = "Query parameter 'target_item_id' must be a 24-character hexadecimal ID",
+            parameter = "target_item_id",
         )
     }
 
@@ -120,14 +116,11 @@ class TarkovRoutesTest {
             parameter("target_item_id", UNKNOWN_ID)
         }
 
-        assertEquals(HttpStatusCode.NotFound, response.status)
-        assertEquals(
-            ApiErrorResponse(
-                code = "item_not_found",
-                message = "No item exists for the requested ID",
-                parameter = "target_item_id",
-            ),
-            response.body(),
+        response.status shouldBe HttpStatusCode.NotFound
+        response.body<ApiErrorResponse>() shouldBe ApiErrorResponse(
+            code = "item_not_found",
+            message = "No item exists for the requested ID",
+            parameter = "target_item_id",
         )
     }
 
@@ -138,10 +131,10 @@ class TarkovRoutesTest {
             parameter("target_item_id", ROOT_ID.uppercase())
         }
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        response.status shouldBe HttpStatusCode.OK
         val graph = response.body<ReactFlowGraph>()
-        assertEquals(setOf(ROOT_ID), graph.nodes.map { it.id }.toSet())
-        assertEquals(emptySet(), graph.edges)
+        graph.nodes.map { it.id }.shouldContainExactlyInAnyOrder(ROOT_ID)
+        graph.edges.shouldBeEmpty()
     }
 
     @Test
@@ -150,8 +143,8 @@ class TarkovRoutesTest {
 
         val response = jsonClient().get("/api/tool-names")
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(listOf("Awl", "Reusable tool"), response.body())
+        response.status shouldBe HttpStatusCode.OK
+        response.body<List<String>>() shouldBe listOf("Awl", "Reusable tool")
     }
 
     @Test
@@ -166,13 +159,10 @@ class TarkovRoutesTest {
         val toolsResponse = jsonClient.get("/api/tool-names")
 
         listOf(itemsResponse, treeResponse, toolsResponse).forEach { response ->
-            assertEquals(HttpStatusCode.InternalServerError, response.status)
-            assertEquals(
-                ApiErrorResponse(
-                    code = "internal_error",
-                    message = "The request could not be completed",
-                ),
-                response.body(),
+            response.status shouldBe HttpStatusCode.InternalServerError
+            response.body<ApiErrorResponse>() shouldBe ApiErrorResponse(
+                code = "internal_error",
+                message = "The request could not be completed",
             )
         }
     }
@@ -183,13 +173,10 @@ class TarkovRoutesTest {
 
         val response = jsonClient().get("/api/craftable-items")
 
-        assertEquals(HttpStatusCode.ServiceUnavailable, response.status)
-        assertEquals(
-            ApiErrorResponse(
-                code = "upstream_unavailable",
-                message = "Tarkov.dev is temporarily unavailable",
-            ),
-            response.body(),
+        response.status shouldBe HttpStatusCode.ServiceUnavailable
+        response.body<ApiErrorResponse>() shouldBe ApiErrorResponse(
+            code = "upstream_unavailable",
+            message = "Tarkov.dev is temporarily unavailable",
         )
     }
 
@@ -201,13 +188,10 @@ class TarkovRoutesTest {
             parameter("target_item_id", ROOT_ID)
         }
 
-        assertEquals(HttpStatusCode.BadGateway, response.status)
-        assertEquals(
-            ApiErrorResponse(
-                code = "upstream_error",
-                message = "Tarkov.dev returned an invalid response",
-            ),
-            response.body(),
+        response.status shouldBe HttpStatusCode.BadGateway
+        response.body<ApiErrorResponse>() shouldBe ApiErrorResponse(
+            code = "upstream_error",
+            message = "Tarkov.dev returned an invalid response",
         )
     }
 

@@ -1,5 +1,6 @@
 package ru.alexredby.stocktaking.route
 
+import io.kotest.matchers.shouldBe
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation as ClientContentNegotiation
 import io.ktor.client.request.get
@@ -12,7 +13,6 @@ import io.ktor.server.testing.testApplication
 import ru.alexredby.stocktaking.dto.HealthResponse
 import ru.alexredby.stocktaking.service.ReadinessCheckException
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class HealthRoutesTest {
     @Test
@@ -25,8 +25,8 @@ class HealthRoutesTest {
 
         val response = client.get("/health/live")
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(HealthResponse("alive"), response.body())
+        response.status shouldBe HttpStatusCode.OK
+        response.body<HealthResponse>() shouldBe HealthResponse("alive")
     }
 
     @Test
@@ -39,8 +39,8 @@ class HealthRoutesTest {
 
         val response = client.get("/health/ready")
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(HealthResponse("ready"), response.body())
+        response.status shouldBe HttpStatusCode.OK
+        response.body<HealthResponse>() shouldBe HealthResponse("ready")
     }
 
     @Test
@@ -58,7 +58,7 @@ class HealthRoutesTest {
 
         val response = client.get("/health/ready")
 
-        assertEquals(HttpStatusCode.ServiceUnavailable, response.status)
-        assertEquals(HealthResponse("not_ready"), response.body())
+        response.status shouldBe HttpStatusCode.ServiceUnavailable
+        response.body<HealthResponse>() shouldBe HealthResponse("not_ready")
     }
 }

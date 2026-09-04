@@ -1,9 +1,9 @@
 package ru.alexredby.stocktaking.configuration
 
 import com.sksamuel.hoplite.ConfigException
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class ConfigLoaderTest {
     data class TestConfig(
@@ -14,24 +14,24 @@ class ConfigLoaderTest {
     fun `loads shared database config with application overrides`() {
         val database = loadConfig<TestConfig>("/valid-config.conf").database
 
-        assertEquals("test-db", database.host)
-        assertEquals(6432, database.port)
-        assertEquals("test-stocktaking", database.name)
-        assertEquals("test-user", database.user)
-        assertEquals("test-password", database.password)
-        assertEquals(10, database.cp.maximumPoolSize)
+        database.host shouldBe "test-db"
+        database.port shouldBe 6432
+        database.name shouldBe "test-stocktaking"
+        database.user shouldBe "test-user"
+        database.password shouldBe "test-password"
+        database.cp.maximumPoolSize shouldBe 10
     }
 
     @Test
     fun `rejects missing required value`() {
-        assertFailsWith<ConfigException> {
+        shouldThrow<ConfigException> {
             loadConfig<TestConfig>("/missing-password-config.conf")
         }
     }
 
     @Test
     fun `rejects invalid typed value`() {
-        assertFailsWith<ConfigException> {
+        shouldThrow<ConfigException> {
             loadConfig<TestConfig>("/invalid-port-config.conf")
         }
     }

@@ -31,6 +31,9 @@ dependencies {
     }
 
     testImplementation(kotlin("test"))
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
 
 tasks.test {

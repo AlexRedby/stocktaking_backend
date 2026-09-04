@@ -17,8 +17,6 @@ dependencies {
     implementation(libs.koin.logger.slf4j)
 
     implementation(libs.apollo.runtime)
-
-    testImplementation(libs.mockk)
 }
 
 apollo {

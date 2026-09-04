@@ -1,21 +1,21 @@
 package ru.alexredby.stocktaking.service
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import ru.alexredby.stocktaking.client.tarkov.dev.TarkovDevClient
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.TestTimeSource
 
 class TarkovStorageTest {
     @Test
-    fun `concurrent first requests share one upstream load including an empty graph`() = runBlocking {
+    fun `concurrent first requests share one upstream load including an empty graph`() = runTest {
         val client = emptyClient(craftsDelayMillis = 50)
         val storage = TarkovStorage(client)
 
@@ -26,7 +26,7 @@ class TarkovStorageTest {
     }
 
     @Test
-    fun `expired graph refreshes and recovers after a failed refresh`() = runBlocking {
+    fun `expired graph refreshes and recovers after a failed refresh`() = runTest {
         val client = mockk<TarkovDevClient>()
         val timeSource = TestTimeSource()
         val refreshFailure = IllegalStateException("refresh failed")
@@ -41,7 +41,7 @@ class TarkovStorageTest {
 
         storage.getFullCraftableTree()
         timeSource += 100.milliseconds
-        assertFailsWith<IllegalStateException> { storage.getFullCraftableTree() }
+        shouldThrow<IllegalStateException> { storage.getFullCraftableTree() }
         storage.getFullCraftableTree()
 
         coVerify(exactly = 3) { client.getCrafts() }

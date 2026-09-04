@@ -1,11 +1,10 @@
 package ru.alexredby.db.migration
 
+import io.kotest.matchers.shouldBe
 import org.testcontainers.postgresql.PostgreSQLContainer
 import ru.alexredby.stocktaking.configuration.DatabaseConfig
 import java.sql.DriverManager
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class DatabaseMigrationTest {
     @Test
@@ -18,8 +17,8 @@ class DatabaseMigrationTest {
             DriverManager.getConnection(postgres.jdbcUrl, postgres.username, postgres.password).use { connection ->
                 connection.createStatement().use { statement ->
                     statement.executeQuery("select count(*) from stocktaking.item").use { result ->
-                        assertTrue(result.next())
-                        assertEquals(0, result.getInt(1))
+                        result.next() shouldBe true
+                        result.getInt(1) shouldBe 0
                     }
                 }
             }

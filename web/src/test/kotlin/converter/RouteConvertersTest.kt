@@ -1,5 +1,8 @@
 package ru.alexredby.stocktaking.converter
 
+import io.kotest.matchers.collections.shouldBeUnique
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
 import ru.alexredby.stocktaking.dto.Craft
 import ru.alexredby.stocktaking.dto.CraftComponent
@@ -7,7 +10,6 @@ import ru.alexredby.stocktaking.dto.GraphItem
 import ru.alexredby.stocktaking.dto.ReactFlowGraph
 import ru.alexredby.stocktaking.dto.Station
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class RouteConvertersTest {
     @Test
@@ -45,14 +47,15 @@ class RouteConvertersTest {
         val roundTripped = Json.decodeFromString<ReactFlowGraph>(Json.encodeToString(graph))
 
         val recipes = roundTripped.nodes.single { it.id == result.id }.data.recipes
-        assertEquals(setOf("recipe-a", "recipe-b"), recipes.map { it.id }.toSet())
-        assertEquals(setOf(2.0, 4.0), recipes.map { it.outputCount }.toSet())
-        assertEquals(setOf(station.id), recipes.map { it.station.id }.toSet())
+        recipes.map { it.id }.shouldContainExactlyInAnyOrder("recipe-a", "recipe-b")
+        recipes.map { it.outputCount }.shouldContainExactlyInAnyOrder(2.0, 4.0)
+        recipes.map { it.station.id }.toSet() shouldBe setOf(station.id)
 
-        assertEquals(setOf("recipe-a:component", "recipe-b:component"), roundTripped.edges.map { it.id }.toSet())
-        assertEquals(setOf("recipe-a", "recipe-b"), roundTripped.edges.map { it.sourceHandle }.toSet())
-        assertEquals(setOf(3.0, 5.0), roundTripped.edges.map { it.requiredItemCount }.toSet())
-        assertEquals(roundTripped.edges.size, roundTripped.edges.map { it.id }.toSet().size)
+        roundTripped.edges.map { it.id }
+            .shouldContainExactlyInAnyOrder("recipe-a:component", "recipe-b:component")
+        roundTripped.edges.map { it.sourceHandle }.shouldContainExactlyInAnyOrder("recipe-a", "recipe-b")
+        roundTripped.edges.map { it.requiredItemCount }.shouldContainExactlyInAnyOrder(3.0, 5.0)
+        roundTripped.edges.map { it.id }.shouldBeUnique()
     }
 
     private fun item(id: String, name: String) = GraphItem(
