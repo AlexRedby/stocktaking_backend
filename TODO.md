@@ -8,10 +8,6 @@ Priorities: P1 blocks safe or correct use; P2 is required for reliability; P3 is
 - Add Ktor route tests for all supported API success and error responses.
 - Add a cross-repository smoke test for autocomplete and crafting-tree rendering through the supported production proxy/origin topology. Done when the backend test/check task and the shared smoke test run in CI from a clean checkout.
 
-## P2 - Dependency and toolchain upgrades
-
-- Add an automated dependency-update workflow with grouped, scheduled proposals and CI verification. Keep Gradle wrapper updates separate from application-library updates and reject unstable versions unless explicitly approved. Done when a dry run produces reviewable groups without modifying generated jOOQ sources or publishing changes automatically.
-
 ## P3 - Maintainability and documentation
 
 - Remove dead code such as the unused `filterTree` path.
